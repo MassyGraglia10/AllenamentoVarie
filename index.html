@@ -27,25 +27,22 @@
 
         .card { background: var(--card); border-radius: 15px; padding: 15px; box-shadow: var(--shadow); margin-bottom: 15px; border: 1px solid #eee; }
         
-        /* TIMER COMPATTO */
         .timer-card { max-width: 320px; margin: 0 auto 15px; padding: 10px; border: 2px solid #eee; }
         .timer-display { font-size: 2rem; font-weight: bold; text-align: center; color: #2c3e50; margin: 5px 0; }
         .flex-btns { display: flex; gap: 8px; justify-content: center; }
         .btn-act { padding: 8px 18px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 0.8rem; }
         
-        .scheda-mini { width: 100%; max-width: 280px; border-radius: 10px; border: 1px solid #ddd; display: block; margin: 10px auto; }
-
-        /* PLAYLIST COMPATTA */
+        /* PLAYLIST DIVERSIFICATE */
         .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-bottom: 10px; }
-        .song-btn { display: flex; align-items: center; justify-content: center; padding: 8px; background: #1db954; color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.7rem; min-height: 40px; line-height: 1.1; overflow: hidden; }
+        .song-btn { display: flex; align-items: center; justify-content: center; padding: 8px; color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.7rem; min-height: 40px; line-height: 1.1; }
+        .btn-music-max { background: #2980b9; }
+        .btn-music-lili { background: #d81b60; }
         .clear-music { font-size: 0.65rem; color: #e74c3c; cursor: pointer; text-align: right; margin-top: 5px; text-decoration: underline; }
 
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
         .v-link { background: #fdfdfd; border: 1px solid #eee; color: #555; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-size: 0.7rem; font-weight: bold; }
 
-        textarea { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 10px; font-family: inherit; resize: none; box-sizing: border-box; font-size: 0.9rem; }
         input[type="text"] { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 8px; box-sizing: border-box; font-size: 0.8rem; margin-bottom: 5px; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -63,9 +60,9 @@
 
     <div id="main-content">
         <div class="card" id="playlist-card" style="display:none;">
-            <div style="font-size:0.65rem; color:#888; font-weight: bold; margin-bottom:8px; text-transform: uppercase;">La tua musica</div>
+            <div id="music-user-label" style="font-size:0.65rem; color:#888; font-weight: bold; margin-bottom:8px; text-transform: uppercase;"></div>
             <div id="music-grid" class="music-grid"></div>
-            <div class="clear-music" onclick="clearMusic()">Svuota lista</div>
+            <div class="clear-music" onclick="clearMusic()">Svuota lista personale</div>
         </div>
 
         <div class="card timer-card">
@@ -78,54 +75,35 @@
 
         <div id="content-max" class="workout-section">
             <div class="card" style="text-align:center;">
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" class="scheda-mini">
-                <a href="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" target="_blank" style="font-size:0.7rem; color:#3498db; text-decoration:none;">🔍 Zoom Scheda</a>
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" class="scheda-mini" style="width:100%; max-width:280px; border-radius:10px;">
             </div>
             <div class="card">
                 <div class="video-grid">
                     <a href="https://www.youtube.com/results?search_query=plank+tutorial" target="_blank" class="v-link">PLANK</a>
-                    <a href="https://www.youtube.com/results?search_query=piegamenti+tutorial" target="_blank" class="v-link">PIEGAMENTI</a>
                     <a href="https://www.youtube.com/results?search_query=lat+machine+tutorial" target="_blank" class="v-link">LAT MACHINE</a>
-                    <a href="https://www.youtube.com/results?search_query=lento+avanti+tutorial" target="_blank" class="v-link">LENTO AVANTI</a>
                     <a href="https://www.youtube.com/results?search_query=pullover+tutorial" target="_blank" class="v-link">PULLOVER</a>
-                    <a href="https://www.youtube.com/results?search_query=leg+curl+tutorial" target="_blank" class="v-link">LEG CURL</a>
                 </div>
             </div>
         </div>
 
         <div id="content-lili" class="workout-section">
             <div class="card" style="text-align:center;">
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" class="scheda-mini">
-                <a href="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" target="_blank" style="font-size:0.7rem; color:#e91e63; text-decoration:none;">🔍 Zoom Scheda</a>
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" class="scheda-mini" style="width:100%; max-width:280px; border-radius:10px;">
             </div>
             <div class="card">
                 <div class="video-grid">
                     <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="v-link">CRUNCH</a>
                     <a href="https://www.youtube.com/results?search_query=leg+press" target="_blank" class="v-link">PRESSA</a>
-                    <a href="https://www.youtube.com/results?search_query=leg+extension" target="_blank" class="v-link">LEG EXTENSION</a>
                     <a href="https://www.youtube.com/results?search_query=goblet+squat" target="_blank" class="v-link">SQUAT GOBLET</a>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <div class="video-grid">
-                <a href="https://www.youtube.com/results?search_query=yoga+italiano" target="_blank" class="v-link" style="color:#8e44ad;">🧘 YOGA</a>
-                <a href="https://www.youtube.com/results?search_query=pilates+italiano" target="_blank" class="v-link" style="color:#2980b9;">🤸 PILATES</a>
-                <a href="https://www.youtube.com/results?search_query=meditazione" target="_blank" class="v-link" style="color:#16a085;">🧠 MIND</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <textarea id="diario" rows="2" placeholder="Note veloci..."></textarea>
-            <button class="btn-act" style="background:#27ae60; width:100%; margin-top:8px;" onclick="saveDiario()">SALVA NOTE</button>
-        </div>
-
-        <div class="card">
-            <div style="font-size:0.7rem; color:#888; font-weight: bold; margin-bottom:5px;">AGGIUNGI MUSICA</div>
-            <input type="text" id="mTitle" placeholder="Titolo (es. Rock, Relax...)">
+            <div style="font-size:0.7rem; color:#888; font-weight: bold; margin-bottom:5px;">AGGIUNGI PLAYLIST PER <span id="add-label">...</span></div>
+            <input type="text" id="mTitle" placeholder="Nome Playlist (es. Rock, Workout...)">
             <div style="display:flex; gap:5px;">
-                <input type="text" id="mLink" placeholder="Incolla link qui..." style="flex:1; margin-bottom:0;">
+                <input type="text" id="mLink" placeholder="Link Playlist Spotify/YT..." style="flex:1; margin-bottom:0;">
                 <button class="btn-act" style="background:#3498db;" onclick="addMusic()">OK</button>
             </div>
         </div>
@@ -133,12 +111,18 @@
 </div>
 
 <script>
+    let currentUser = "";
+
     function showWorkout(user) {
+        currentUser = user;
         document.getElementById('main-content').style.display = 'block';
         document.querySelectorAll('.workout-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.btn-user').forEach(b => b.classList.remove('active'));
         document.getElementById('content-' + user).classList.add('active');
         document.getElementById('btn-' + user).classList.add('active');
+        document.getElementById('add-label').innerText = user.toUpperCase();
+        document.getElementById('music-user-label').innerText = "Playlist di " + user;
+        renderPlaylist();
     }
 
     let timeLeft = 90; let timer; let running = false;
@@ -151,34 +135,33 @@
     }
     function resetTimer() { clearInterval(timer); timeLeft = 90; running = false; document.getElementById('display').innerText = '90s'; document.getElementById('tBtn').innerText = 'START'; }
 
-    function saveDiario() { localStorage.setItem('gym_note_2026', document.getElementById('diario').value); alert('Note salvate!'); }
-
-    // PLAYLIST CON TITOLI E GRIGLIA
+    // GESTIONE PLAYLIST SEPARATE
     function addMusic() {
-        const titleInput = document.getElementById('mTitle');
-        const linkInput = document.getElementById('mLink');
-        const title = titleInput.value.trim() || "Brano";
-        const link = linkInput.value.trim();
-        
-        if(link) {
-            let list = JSON.parse(localStorage.getItem('gym_playlist_v2') || "[]");
+        const title = document.getElementById('mTitle').value.trim() || "Playlist";
+        const link = document.getElementById('mLink').value.trim();
+        if(link && currentUser) {
+            let key = 'gym_playlist_' + currentUser;
+            let list = JSON.parse(localStorage.getItem(key) || "[]");
             list.push({ title: title.toUpperCase(), link: link });
-            localStorage.setItem('gym_playlist_v2', JSON.stringify(list));
-            titleInput.value = "";
-            linkInput.value = "";
+            localStorage.setItem(key, JSON.stringify(list));
+            document.getElementById('mTitle').value = "";
+            document.getElementById('mLink').value = "";
             renderPlaylist();
         }
     }
 
     function renderPlaylist() {
-        const list = JSON.parse(localStorage.getItem('gym_playlist_v2') || "[]");
+        if(!currentUser) return;
+        let key = 'gym_playlist_' + currentUser;
+        const list = JSON.parse(localStorage.getItem(key) || "[]");
         const container = document.getElementById('music-grid');
         const card = document.getElementById('playlist-card');
+        const btnClass = currentUser === 'max' ? 'btn-music-max' : 'btn-music-lili';
         
         if(list.length > 0) {
             card.style.display = 'block';
             container.innerHTML = list.map((item) => 
-                `<a class="song-btn" href="${item.link}" target="_blank">${item.title}</a>`
+                `<a class="song-btn ${btnClass}" href="${item.link}" target="_blank">${item.title}</a>`
             ).join('');
         } else {
             card.style.display = 'none';
@@ -186,17 +169,11 @@
     }
 
     function clearMusic() {
-        if(confirm("Svuotare la lista musicale?")) {
-            localStorage.removeItem('gym_playlist_v2');
+        if(confirm("Svuotare la tua lista personale?")) {
+            localStorage.removeItem('gym_playlist_' + currentUser);
             renderPlaylist();
         }
     }
-
-    window.onload = () => {
-        const savedNote = localStorage.getItem('gym_note_2026');
-        if(savedNote) document.getElementById('diario').value = savedNote;
-        renderPlaylist();
-    };
 </script>
 </body>
 </html>
