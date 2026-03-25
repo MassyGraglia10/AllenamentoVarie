@@ -35,22 +35,24 @@
         
         .scheda-mini { width: 100%; max-width: 280px; border-radius: 10px; border: 1px solid #ddd; display: block; margin: 10px auto; }
 
-        /* PLAYLIST MULTIPLA */
-        .music-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-        .song-btn { display: block; width: 100%; padding: 12px; background: #1db954; color: white; text-align: center; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 0.85rem; }
-        .clear-music { font-size: 0.7rem; color: #e74c3c; cursor: pointer; text-align: right; margin-top: 5px; font-weight: bold; }
+        /* PLAYLIST COMPATTA */
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-bottom: 10px; }
+        .song-btn { display: flex; align-items: center; justify-content: center; padding: 8px; background: #1db954; color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.7rem; min-height: 40px; line-height: 1.1; overflow: hidden; }
+        .clear-music { font-size: 0.65rem; color: #e74c3c; cursor: pointer; text-align: right; margin-top: 5px; text-decoration: underline; }
 
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
         .v-link { background: #fdfdfd; border: 1px solid #eee; color: #555; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-size: 0.7rem; font-weight: bold; }
 
         textarea { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 10px; font-family: inherit; resize: none; box-sizing: border-box; font-size: 0.9rem; }
+        input[type="text"] { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 8px; box-sizing: border-box; font-size: 0.8rem; margin-bottom: 5px; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1 style="margin:0; font-size: 1.3rem;">🏋️ WORKOUT HUB</h1>
+    <h1 style="margin:0; font-size: 1.2rem;">🏋️ WORKOUT HUB</h1>
 </div>
 
 <div class="container">
@@ -61,13 +63,12 @@
 
     <div id="main-content">
         <div class="card" id="playlist-card" style="display:none;">
-            <div style="font-size:0.7rem; color:#888; font-weight: bold; margin-bottom:8px;">LA TUA MUSICA</div>
-            <div id="music-list" class="music-list"></div>
-            <div class="clear-music" onclick="clearMusic()">🗑 Svuota Playlist</div>
+            <div style="font-size:0.65rem; color:#888; font-weight: bold; margin-bottom:8px; text-transform: uppercase;">La tua musica</div>
+            <div id="music-grid" class="music-grid"></div>
+            <div class="clear-music" onclick="clearMusic()">Svuota lista</div>
         </div>
 
         <div class="card timer-card">
-            <div style="text-align:center; font-size:0.7rem; color:#888; font-weight: bold;">RECUPERO</div>
             <div class="timer-display" id="display">90s</div>
             <div class="flex-btns">
                 <button class="btn-act" style="background:#27ae60;" id="tBtn" onclick="toggleTimer()">START</button>
@@ -78,7 +79,7 @@
         <div id="content-max" class="workout-section">
             <div class="card" style="text-align:center;">
                 <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" class="scheda-mini">
-                <a href="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" target="_blank" style="font-size:0.75rem; color:#3498db; text-decoration:none; font-weight:bold;">🔍 Ingrandisci Scheda</a>
+                <a href="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" target="_blank" style="font-size:0.7rem; color:#3498db; text-decoration:none;">🔍 Zoom Scheda</a>
             </div>
             <div class="card">
                 <div class="video-grid">
@@ -95,7 +96,7 @@
         <div id="content-lili" class="workout-section">
             <div class="card" style="text-align:center;">
                 <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" class="scheda-mini">
-                <a href="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" target="_blank" style="font-size:0.75rem; color:#e91e63; text-decoration:none; font-weight:bold;">🔍 Ingrandisci Scheda</a>
+                <a href="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" target="_blank" style="font-size:0.7rem; color:#e91e63; text-decoration:none;">🔍 Zoom Scheda</a>
             </div>
             <div class="card">
                 <div class="video-grid">
@@ -116,14 +117,15 @@
         </div>
 
         <div class="card">
-            <textarea id="diario" rows="2" placeholder="Note veloci su pesi o sensazioni..."></textarea>
-            <button class="btn-act" style="background:#27ae60; width:100%; margin-top:10px;" onclick="saveDiario()">SALVA NOTE</button>
+            <textarea id="diario" rows="2" placeholder="Note veloci..."></textarea>
+            <button class="btn-act" style="background:#27ae60; width:100%; margin-top:8px;" onclick="saveDiario()">SALVA NOTE</button>
         </div>
 
         <div class="card">
-            <div style="font-size:0.7rem; color:#888; font-weight: bold; margin-bottom:8px;">AGGIUNGI BRANO O PLAYLIST</div>
+            <div style="font-size:0.7rem; color:#888; font-weight: bold; margin-bottom:5px;">AGGIUNGI MUSICA</div>
+            <input type="text" id="mTitle" placeholder="Titolo (es. Rock, Relax...)">
             <div style="display:flex; gap:5px;">
-                <input type="text" id="mLink" placeholder="Incolla link..." style="flex:1; padding:10px; border-radius:8px; border:1px solid #ddd; font-size:0.8rem;">
+                <input type="text" id="mLink" placeholder="Incolla link qui..." style="flex:1; margin-bottom:0;">
                 <button class="btn-act" style="background:#3498db;" onclick="addMusic()">OK</button>
             </div>
         </div>
@@ -151,28 +153,32 @@
 
     function saveDiario() { localStorage.setItem('gym_note_2026', document.getElementById('diario').value); alert('Note salvate!'); }
 
-    // GESTIONE PLAYLIST MULTIPLA
+    // PLAYLIST CON TITOLI E GRIGLIA
     function addMusic() {
-        const input = document.getElementById('mLink');
-        const link = input.value.trim();
+        const titleInput = document.getElementById('mTitle');
+        const linkInput = document.getElementById('mLink');
+        const title = titleInput.value.trim() || "Brano";
+        const link = linkInput.value.trim();
+        
         if(link) {
-            let list = JSON.parse(localStorage.getItem('gym_playlist') || "[]");
-            list.push(link);
-            localStorage.setItem('gym_playlist', JSON.stringify(list));
-            input.value = "";
+            let list = JSON.parse(localStorage.getItem('gym_playlist_v2') || "[]");
+            list.push({ title: title.toUpperCase(), link: link });
+            localStorage.setItem('gym_playlist_v2', JSON.stringify(list));
+            titleInput.value = "";
+            linkInput.value = "";
             renderPlaylist();
         }
     }
 
     function renderPlaylist() {
-        const list = JSON.parse(localStorage.getItem('gym_playlist') || "[]");
-        const container = document.getElementById('music-list');
+        const list = JSON.parse(localStorage.getItem('gym_playlist_v2') || "[]");
+        const container = document.getElementById('music-grid');
         const card = document.getElementById('playlist-card');
         
         if(list.length > 0) {
             card.style.display = 'block';
-            container.innerHTML = list.map((link, index) => 
-                `<a class="song-btn" href="${link}" target="_blank">🎵 BRANO ${index + 1}</a>`
+            container.innerHTML = list.map((item) => 
+                `<a class="song-btn" href="${item.link}" target="_blank">${item.title}</a>`
             ).join('');
         } else {
             card.style.display = 'none';
@@ -180,8 +186,8 @@
     }
 
     function clearMusic() {
-        if(confirm("Vuoi svuotare la tua lista musicale?")) {
-            localStorage.removeItem('gym_playlist');
+        if(confirm("Svuotare la lista musicale?")) {
+            localStorage.removeItem('gym_playlist_v2');
             renderPlaylist();
         }
     }
