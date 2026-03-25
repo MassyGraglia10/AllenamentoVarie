@@ -3,108 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Workout Hub - Max & Lili</title>
+    <title>Workout Hub Pro - Max & Lili</title>
     <style>
         :root { 
-            --bg: #f8f9fa; --card: #ffffff; --text: #333;
-            --max-color: #3498db; --lili-color: #e91e63;
-            --shadow: 0 4px 15px rgba(0,0,0,0.06);
+            --bg: #f0f2f5; --card: #ffffff; --text: #1c1e21;
+            --max-primary: #007bff; --lili-primary: #d63384;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
         
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 40px; }
-        .header { text-align: center; padding: 15px; background: white; box-shadow: var(--shadow); border-bottom: 1px solid #eee; }
-        .container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
+        body { font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 50px; }
+        .header { text-align: center; padding: 20px; background: white; box-shadow: var(--shadow); }
+        .container { max-width: 500px; margin: 0 auto; padding: 15px; }
 
+        /* SELETTORE PROFILO */
         .user-selector { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-user { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; color: white; transition: 0.3s; font-size: 0.9rem; }
-        .btn-max { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .btn-lili { background: linear-gradient(135deg, #ec407a, #d81b60); }
-        .btn-user.active { transform: scale(0.98); border: 2px solid #333; }
+        .btn-user { flex: 1; padding: 18px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; color: white; transition: 0.3s; font-size: 1rem; }
+        .btn-max { background: var(--max-primary); }
+        .btn-lili { background: var(--lili-primary); }
+        .btn-user.active { outline: 3px solid #333; transform: scale(0.96); }
 
         #main-content { display: none; }
         .workout-section { display: none; }
         .workout-section.active { display: block; animation: fadeIn 0.4s; }
 
-        .card { background: var(--card); border-radius: 15px; padding: 15px; box-shadow: var(--shadow); margin-bottom: 15px; border: 1px solid #eee; }
-        
-        .timer-card { max-width: 320px; margin: 0 auto 15px; padding: 10px; border: 2px solid #eee; }
-        .timer-display { font-size: 2rem; font-weight: bold; text-align: center; color: #2c3e50; margin: 5px 0; }
-        .flex-btns { display: flex; gap: 8px; justify-content: center; }
-        .btn-act { padding: 8px 18px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 0.8rem; }
-        
-        /* PLAYLIST DIVERSIFICATE */
-        .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-bottom: 10px; }
-        .song-btn { display: flex; align-items: center; justify-content: center; padding: 8px; color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.7rem; min-height: 40px; line-height: 1.1; }
-        .btn-music-max { background: #2980b9; }
-        .btn-music-lili { background: #d81b60; }
-        .clear-music { font-size: 0.65rem; color: #e74c3c; cursor: pointer; text-align: right; margin-top: 5px; text-decoration: underline; }
+        .card { background: var(--card); border-radius: 16px; padding: 15px; box-shadow: var(--shadow); margin-bottom: 15px; }
+        .section-title { font-size: 0.75rem; font-weight: 800; color: #888; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
 
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
-        .v-link { background: #fdfdfd; border: 1px solid #eee; color: #555; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-size: 0.7rem; font-weight: bold; }
+        /* CALENDARIO */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .cal-day { padding: 8px 0; font-size: 0.8rem; border-radius: 8px; background: #f8f9fa; cursor: pointer; border: 1px solid #eee; }
+        .cal-day.done { background: #28a745 !important; color: white; font-weight: bold; }
+        .cal-month { font-weight: bold; margin-bottom: 10px; text-align: center; font-size: 0.9rem; }
 
-        input[type="text"] { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 8px; box-sizing: border-box; font-size: 0.8rem; margin-bottom: 5px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* TIMER */
+        .timer-card { max-width: 250px; margin: 0 auto 15px; text-align: center; }
+        .timer-display { font-size: 2.2rem; font-weight: 900; margin: 5px 0; color: #333; }
+        .btn-act { padding: 8px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 0.8rem; }
+
+        /* PLAYLIST */
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+        .song-btn { padding: 10px; color: white; text-align: center; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; min-height: 40px; }
+
+        /* VIDEO TUTORIAL */
+        .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .v-link { background: #f0f2f5; padding: 12px; border-radius: 10px; text-decoration: none; color: #444; font-size: 0.75rem; font-weight: 700; text-align: center; border: 1px solid #e4e6eb; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1 style="margin:0; font-size: 1.2rem;">🏋️ WORKOUT HUB</h1>
+    <h1 style="margin:0; font-size: 1.4rem;">💪 WORKOUT HUB</h1>
 </div>
 
 <div class="container">
     <div class="user-selector">
-        <button id="btn-max" class="btn-user btn-max" onclick="showWorkout('max')">♂ Massimo</button>
-        <button id="btn-lili" class="btn-user btn-lili" onclick="showWorkout('lili')">♀ Liliana</button>
+        <button id="btn-max" class="btn-user btn-max" onclick="showWorkout('max')">MASSIMO</button>
+        <button id="btn-lili" class="btn-user btn-lili" onclick="showWorkout('lili')">LILIANA</button>
     </div>
 
     <div id="main-content">
+        <div class="card">
+            <div class="section-title">Calendario Allenamenti</div>
+            <div id="calendar-month" class="cal-month">Marzo 2026</div>
+            <div id="calendar" class="calendar-grid"></div>
+            <p style="font-size: 0.6rem; color: #999; margin-top: 10px; text-align: center;">Tocca un giorno per segnarlo come completato ✅</p>
+        </div>
+
         <div class="card" id="playlist-card" style="display:none;">
-            <div id="music-user-label" style="font-size:0.65rem; color:#888; font-weight: bold; margin-bottom:8px; text-transform: uppercase;"></div>
+            <div class="section-title">La tua Musica</div>
             <div id="music-grid" class="music-grid"></div>
-            <div class="clear-music" onclick="clearMusic()">Svuota lista personale</div>
+            <div style="font-size: 0.6rem; color: #e74c3c; cursor: pointer; margin-top: 10px; text-align: right;" onclick="clearMusic()">Svuota lista</div>
         </div>
 
         <div class="card timer-card">
+            <div class="section-title">Recupero</div>
             <div class="timer-display" id="display">90s</div>
-            <div class="flex-btns">
-                <button class="btn-act" style="background:#27ae60;" id="tBtn" onclick="toggleTimer()">START</button>
-                <button class="btn-act" style="background:#e74c3c;" onclick="resetTimer()">RESET</button>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn-act" style="background:#28a745;" id="tBtn" onclick="toggleTimer()">START</button>
+                <button class="btn-act" style="background:#6c757d;" onclick="resetTimer()">RESET</button>
             </div>
         </div>
 
         <div id="content-max" class="workout-section">
             <div class="card" style="text-align:center;">
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" class="scheda-mini" style="width:100%; max-width:280px; border-radius:10px;">
-            </div>
-            <div class="card">
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; max-width:250px; border-radius:10px; margin-bottom:10px;">
+                <div class="section-title">Video Tutorial</div>
                 <div class="video-grid">
                     <a href="https://www.youtube.com/results?search_query=plank+tutorial" target="_blank" class="v-link">PLANK</a>
                     <a href="https://www.youtube.com/results?search_query=lat+machine+tutorial" target="_blank" class="v-link">LAT MACHINE</a>
                     <a href="https://www.youtube.com/results?search_query=pullover+tutorial" target="_blank" class="v-link">PULLOVER</a>
+                    <a href="https://www.youtube.com/results?search_query=piegamenti+tutorial" target="_blank" class="v-link">PIEGAMENTI</a>
                 </div>
             </div>
         </div>
 
         <div id="content-lili" class="workout-section">
             <div class="card" style="text-align:center;">
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" class="scheda-mini" style="width:100%; max-width:280px; border-radius:10px;">
-            </div>
-            <div class="card">
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; max-width:250px; border-radius:10px; margin-bottom:10px;">
+                <div class="section-title">Video Tutorial</div>
                 <div class="video-grid">
                     <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="v-link">CRUNCH</a>
                     <a href="https://www.youtube.com/results?search_query=leg+press" target="_blank" class="v-link">PRESSA</a>
                     <a href="https://www.youtube.com/results?search_query=goblet+squat" target="_blank" class="v-link">SQUAT GOBLET</a>
+                    <a href="https://www.youtube.com/results?search_query=chest+press" target="_blank" class="v-link">CHEST PRESS</a>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <div style="font-size:0.7rem; color:#888; font-weight: bold; margin-bottom:5px;">AGGIUNGI PLAYLIST PER <span id="add-label">...</span></div>
-            <input type="text" id="mTitle" placeholder="Nome Playlist (es. Rock, Workout...)">
+            <div class="section-title">Wellness & Mind</div>
+            <div class="video-grid">
+                <a href="https://www.youtube.com/results?search_query=yoga+italiano" target="_blank" class="v-link" style="color:var(--lili-primary);">🧘 YOGA</a>
+                <a href="https://www.youtube.com/results?search_query=pilates+italiano" target="_blank" class="v-link" style="color:var(--max-primary);">🤸 PILATES</a>
+                <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="v-link" style="color:#16a085;">🧠 MIND</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Aggiungi Playlist</div>
+            <input type="text" id="mTitle" placeholder="Titolo (es. Rock)">
             <div style="display:flex; gap:5px;">
-                <input type="text" id="mLink" placeholder="Link Playlist Spotify/YT..." style="flex:1; margin-bottom:0;">
-                <button class="btn-act" style="background:#3498db;" onclick="addMusic()">OK</button>
+                <input type="text" id="mLink" placeholder="Incolla Link Playlist..." style="flex:1; border: 1px solid #ddd; border-radius: 8px; padding: 8px;">
+                <button class="btn-act" style="background:var(--max-primary);" onclick="addMusic()">OK</button>
             </div>
         </div>
     </div>
@@ -112,6 +134,7 @@
 
 <script>
     let currentUser = "";
+    const daysInMonth = 31;
 
     function showWorkout(user) {
         currentUser = user;
@@ -120,11 +143,37 @@
         document.querySelectorAll('.btn-user').forEach(b => b.classList.remove('active'));
         document.getElementById('content-' + user).classList.add('active');
         document.getElementById('btn-' + user).classList.add('active');
-        document.getElementById('add-label').innerText = user.toUpperCase();
-        document.getElementById('music-user-label').innerText = "Playlist di " + user;
+        renderCalendar();
         renderPlaylist();
     }
 
+    // CALENDARIO LOGIC
+    function renderCalendar() {
+        const container = document.getElementById('calendar');
+        container.innerHTML = "";
+        let doneDays = JSON.parse(localStorage.getItem('workout_days_' + currentUser) || "[]");
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const day = document.createElement('div');
+            day.className = 'cal-day' + (doneDays.includes(i) ? ' done' : '');
+            day.innerText = i;
+            day.onclick = () => toggleDay(i);
+            container.appendChild(day);
+        }
+    }
+
+    function toggleDay(day) {
+        let doneDays = JSON.parse(localStorage.getItem('workout_days_' + currentUser) || "[]");
+        if (doneDays.includes(day)) {
+            doneDays = doneDays.filter(d => d !== day);
+        } else {
+            doneDays.push(day);
+        }
+        localStorage.setItem('workout_days_' + currentUser, JSON.stringify(doneDays));
+        renderCalendar();
+    }
+
+    // TIMER LOGIC
     let timeLeft = 90; let timer; let running = false;
     function toggleTimer() {
         if(!running) { 
@@ -135,45 +184,32 @@
     }
     function resetTimer() { clearInterval(timer); timeLeft = 90; running = false; document.getElementById('display').innerText = '90s'; document.getElementById('tBtn').innerText = 'START'; }
 
-    // GESTIONE PLAYLIST SEPARATE
+    // PLAYLIST LOGIC
     function addMusic() {
-        const title = document.getElementById('mTitle').value.trim() || "Playlist";
-        const link = document.getElementById('mLink').value.trim();
-        if(link && currentUser) {
-            let key = 'gym_playlist_' + currentUser;
-            let list = JSON.parse(localStorage.getItem(key) || "[]");
+        const title = document.getElementById('mTitle').value || "Music";
+        const link = document.getElementById('mLink').value;
+        if(link) {
+            let list = JSON.parse(localStorage.getItem('playlist_' + currentUser) || "[]");
             list.push({ title: title.toUpperCase(), link: link });
-            localStorage.setItem(key, JSON.stringify(list));
-            document.getElementById('mTitle').value = "";
-            document.getElementById('mLink').value = "";
+            localStorage.setItem('playlist_' + currentUser, JSON.stringify(list));
+            document.getElementById('mTitle').value = ""; document.getElementById('mLink').value = "";
             renderPlaylist();
         }
     }
 
     function renderPlaylist() {
-        if(!currentUser) return;
-        let key = 'gym_playlist_' + currentUser;
-        const list = JSON.parse(localStorage.getItem(key) || "[]");
+        const list = JSON.parse(localStorage.getItem('playlist_' + currentUser) || "[]");
         const container = document.getElementById('music-grid');
         const card = document.getElementById('playlist-card');
-        const btnClass = currentUser === 'max' ? 'btn-music-max' : 'btn-music-lili';
+        const color = currentUser === 'max' ? 'var(--max-primary)' : 'var(--lili-primary)';
         
         if(list.length > 0) {
             card.style.display = 'block';
-            container.innerHTML = list.map((item) => 
-                `<a class="song-btn ${btnClass}" href="${item.link}" target="_blank">${item.title}</a>`
-            ).join('');
-        } else {
-            card.style.display = 'none';
-        }
+            container.innerHTML = list.map(item => `<a class="song-btn" style="background:${color}" href="${item.link}" target="_blank">${item.title}</a>`).join('');
+        } else { card.style.display = 'none'; }
     }
 
-    function clearMusic() {
-        if(confirm("Svuotare la tua lista personale?")) {
-            localStorage.removeItem('gym_playlist_' + currentUser);
-            renderPlaylist();
-        }
-    }
+    function clearMusic() { localStorage.removeItem('playlist_' + currentUser); renderPlaylist(); }
 </script>
 </body>
 </html>
