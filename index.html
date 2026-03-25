@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Max&Lili Wellness Hub</title>
+    <title>Max&Lili Wellness Hub Pro</title>
     <style>
         :root { 
-            --bg: #f8f9fa; --card: #ffffff; --text: #2d3436;
+            --bg: #f4f7f6; --card: #ffffff; --text: #2d3436;
             --max-primary: #0984e3; --lili-primary: #d63031;
             --well-primary: #10ac84; --track-primary: #6c5ce7;
             --club-gold: #d4af37; --shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -15,7 +15,7 @@
         .header { text-align: center; padding: 15px; background: white; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
         .user-selector { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-user { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; color: white; opacity: 0.6; transition: 0.3s; }
+        .btn-user { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; color: white; opacity: 0.6; }
         .btn-max { background: var(--max-primary); }
         .btn-lili { background: var(--lili-primary); }
         .btn-user.active { opacity: 1; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
@@ -32,20 +32,20 @@
         /* WELLNESS & PLAYLIST */
         .grid-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .link-item { padding: 12px; border-radius: 12px; text-decoration: none; color: #2d3436; background: #f1f2f6; font-size: 0.75rem; font-weight: bold; display: flex; align-items: center; gap: 8px; border: 1px solid #dfe6e9; }
-        .playlist-card { background: linear-gradient(135deg, #1db954, #191414); color: white; border: none; }
+        
+        .playlist-item { background: #1db954; color: white; padding: 10px; border-radius: 10px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; font-size: 0.8rem; }
 
-        /* MODALE INTEGRATA */
+        /* MODALE */
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal-box { background: white; width: 100%; max-width: 400px; border-radius: 24px; padding: 20px; max-height: 90vh; overflow-y: auto; }
-        .course-chip { display: inline-block; padding: 6px 10px; background: #f0f2f5; border-radius: 8px; font-size: 0.7rem; margin: 3px; cursor: pointer; border: 1px solid #ddd; }
-        .course-chip:active { background: var(--club-gold); color: white; }
+        .course-chip { display: inline-block; padding: 6px 10px; background: #f0f2f5; border-radius: 8px; font-size: 0.65rem; margin: 3px; cursor: pointer; border: 1px solid #ddd; font-weight: 600; }
         textarea { width: 100%; height: 60px; border: 1px solid #ddd; border-radius: 12px; padding: 10px; margin: 10px 0; font-size: 0.9rem; resize: none; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1 style="margin:0; font-size: 1.1rem; letter-spacing: -0.5px;">🏛️ CLUB ADRIANO <span style="color:var(--club-gold)">WELLNESS HUB</span></h1>
+    <h1 style="margin:0; font-size: 1.1rem;">🏛️ CLUB ADRIANO <span style="color:var(--club-gold)">TOTAL WELLNESS</span></h1>
 </div>
 
 <div class="container">
@@ -56,33 +56,34 @@
 
     <div id="main-app" style="display:none;">
         <div class="card">
-            <div class="section-title">📅 Diario & Corsi</div>
+            <div class="section-title">📅 Diario & Corsi Real-Time</div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <button onclick="app.changeMonth(-1)" style="border:none; background:none; font-size:1.2rem;">❮</button>
-                <span id="month-label" style="font-weight:900; font-size:0.9rem;"></span>
-                <button onclick="app.changeMonth(1)" style="border:none; background:none; font-size:1.2rem;">❯</button>
+                <button onclick="app.changeMonth(-1)" style="border:none; background:none;">❮</button>
+                <span id="month-label" style="font-weight:900;"></span>
+                <button onclick="app.changeMonth(1)" style="border:none; background:none;">❯</button>
             </div>
             <div class="calendar-grid" id="calendar"></div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">🎵 La Mia Musica</div>
+            <div id="playlist-list" style="margin-bottom:10px;"></div>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="p-title" placeholder="Titolo" style="flex:1; padding:8px; border-radius:8px; border:1px solid #ddd;">
+                <input type="text" id="p-url" placeholder="Link" style="flex:2; padding:8px; border-radius:8px; border:1px solid #ddd;">
+                <button onclick="app.addMusic()" style="background:var(--well-primary); color:white; border:none; border-radius:8px; padding:0 10px;">+</button>
+            </div>
         </div>
 
         <div class="card">
             <div class="section-title" style="color:var(--well-primary);">🌿 Wellness & Recovery</div>
             <div class="grid-links">
                 <a href="https://www.youtube.com/results?search_query=yoga+vinyasa+ita" target="_blank" class="link-item">🧘 Yoga Flow</a>
-                <a href="https://www.youtube.com/results?search_query=stretching+completo+ita" target="_blank" class="link-item">📏 Stretching</a>
-                <a href="https://www.youtube.com/results?search_query=meditazione+guidata+10+minuti" target="_blank" class="link-item">🧠 Mindset</a>
-                <a href="https://www.youtube.com/results?search_query=esercizi+respirazione+diaframmatica" target="_blank" class="link-item">🌬️ Breath</a>
+                <a href="https://www.youtube.com/results?search_query=stretching+posturale+ita" target="_blank" class="link-item">📏 Stretching</a>
+                <a href="https://www.youtube.com/results?search_query=meditazione+guidata+ita" target="_blank" class="link-item">🧠 Mind</a>
+                <a href="https://www.youtube.com/results?search_query=respirazione+diaframmatica" target="_blank" class="link-item">🌬️ Breath</a>
             </div>
         </div>
-
-        <a href="https://open.spotify.com/playlist/37i9dQZF1DX76W9SwwE6fk" target="_blank" class="card link-item playlist-card">
-            <span>🎵</span>
-            <div style="flex:1">
-                <div style="font-size:0.8rem; font-weight:900">GYM ENERGY 2026</div>
-                <div style="font-size:0.6rem; opacity:0.8">La tua carica per l'allenamento</div>
-            </div>
-            <span>▶️</span>
-        </a>
 
         <div id="scheda-max" class="u-content" style="display:none;">
             <div class="card"><div class="section-title">📋 Scheda Massimo</div><img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; border-radius:12px;"></div>
@@ -95,29 +96,26 @@
 
 <div id="modal">
     <div class="modal-box">
-        <h3 id="m-date" style="margin:0 0 15px 0; font-size:1.1rem;">Giorno</h3>
-        
-        <div class="section-title" style="color:var(--club-gold)">Corsi Disponibili oggi:</div>
-        <div id="m-courses" style="margin-bottom:15px;"></div>
-
+        <h3 id="m-date" style="margin-top:0;">Giorno</h3>
+        <div class="section-title" style="color:var(--club-gold)">Tutti i Corsi di oggi:</div>
+        <div id="m-courses" style="margin-bottom:15px; background:#f9f9f9; padding:10px; border-radius:10px;"></div>
         <div class="section-title">Note Allenamento:</div>
-        <textarea id="m-note" placeholder="Esempio: Fatto 30 min cardio + corso..."></textarea>
-        
+        <textarea id="m-note"></textarea>
         <div style="display:flex; gap:10px;">
-            <button onclick="app.save(true)" style="flex:1; padding:15px; background:#2ecc71; color:white; border:none; border-radius:12px; font-weight:bold;">COMPLETATO ✅</button>
+            <button onclick="app.save(true)" style="flex:1; padding:15px; background:#2ecc71; color:white; border:none; border-radius:12px; font-weight:bold;">SALVA ✅</button>
             <button onclick="app.save(false)" style="flex:1; padding:15px; background:#eee; color:#666; border:none; border-radius:12px; font-weight:bold;">CHIUDI</button>
         </div>
     </div>
 </div>
 
 <script>
-    const corsiFull = {
-        1: ["09:00 Tone Up (S1)","10:15 AcquaFit (P)","13:00 Fat Burns (S1)","18:00 AeroDance (S1)","19:00 Tone Up (S1)","20:00 Spinning"],
-        2: ["09:00 GymDance (S1)","13:00 Tone Up (S1)","18:15 AcquaBike (P)","19:00 TRX (S1)","20:00 Walking (S2)"],
-        3: ["09:00 Posturale (S1)","10:15 AcquaStrong (P)","12:00 Total Body (S1)","19:30 AcquaCircuit","20:00 Pump (S1)"],
-        4: ["10:00 Pilates (S1)","13:00 Power Yoga (S1)","18:15 AcquaBike (P)","19:00 GAG (S1)","20:00 Body Condit."],
-        5: ["09:00 GAG (S1)","13:00 Latin Moove","18:00 FitDance","20:00 Tone Light"],
-        6: ["09:00 Yoga (S1)","10:00 Tone Up (S1)","12:00 FitDance (S1)"]
+    const palinsesto = {
+        1: ["09:00 Tone Up (S1)", "10:15 AcquaFit (P)", "12:00 Power&Func (S1)", "13:00 Fat Burns (S1)", "16:00 Body Fit (S1)", "18:00 AeroDance (S1)", "19:00 Tone Up (S1)", "20:00 Spinning (S2)", "21:00 Yoga (S1)"],
+        2: ["09:00 GymDance (S1)", "10:00 Tone Up (S1)", "11:00 Pilates (S1)", "12:00 AeroDance (S1)", "13:00 Tone Up (S1)", "18:15 AcquaBike (P)", "19:00 TRX (S1)", "20:00 Walking (S2)", "20:15 AcquaFit (P)"],
+        3: ["09:00 Posturale (S1)", "10:00 GAG (S1)", "10:15 AcquaStrong (P)", "11:00 Pilates (S1)", "12:00 Total Body (S1)", "13:00 Yoga (S1)", "17:00 Body Sculpt (S1)", "18:15 AcquaBike (P)", "19:30 AcquaCircuit", "20:00 Pump (S1)"],
+        4: ["09:00 Tone Up (S1)", "10:00 Pilates (S1)", "13:00 Power Yoga (S1)", "17:00 Fit&Strong (S1)", "18:15 AcquaBike (P)", "19:00 GAG (S1)", "20:00 Body Condit. (S1)"],
+        5: ["09:00 GAG (S1)", "10:00 Circuit (S1)", "13:00 Latin Moove", "17:00 Pump (S1)", "18:00 FitDance (S1)", "19:00 Step (S1)", "20:00 Tone Light (S1)"],
+        6: ["09:00 Yoga (S1)", "10:00 Tone Up (S1)", "11:00 GAG (S1)", "12:00 FitDance (S1)"]
     };
 
     const app = {
@@ -128,7 +126,7 @@
             document.getElementById('scheda-'+u).style.display = 'block';
             document.querySelectorAll('.btn-user').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-'+u).classList.add('active');
-            this.renderCalendar();
+            this.renderCalendar(); this.renderMusic();
         },
         renderCalendar() {
             const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
@@ -145,29 +143,45 @@
             }
         },
         open(i) {
-            this.selI = i;
-            const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
+            this.selI = i; const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
             const data = JSON.parse(localStorage.getItem(`db_${this.user}_${m}_${y}`) || "{}");
             document.getElementById('m-date').innerText = `${i} ${document.getElementById('month-label').innerText}`;
             document.getElementById('m-note').value = data[i]?.note || "";
-            
-            // Logica Giorno Settimana per Corsi
-            const dayOfWeek = new Date(y, m, i).getDay() || 7;
-            const list = corsiFull[dayOfWeek] || ["Nessun corso previsto"];
-            document.getElementById('m-courses').innerHTML = list.map(c => 
-                `<span class="course-chip" onclick="app.addC('${c}')">${c}</span>`).join('');
-            
+            const dayOfWeek = new Date(y, m, i).getDay();
+            const list = palinsesto[dayOfWeek === 0 ? 6 : dayOfWeek] || ["Nessun corso"];
+            document.getElementById('m-courses').innerHTML = list.map(c => `<span class="course-chip" onclick="app.addC('${c}')">${c}</span>`).join('');
             document.getElementById('modal').style.display = 'flex';
         },
-        addC(c) { document.getElementById('m-note').value += (document.getElementById('m-note').value ? ", " : "") + c; },
+        addC(c) { document.getElementById('m-note').value += (document.getElementById('m-note').value ? "\n" : "") + "✔️ " + c; },
         save(done) {
             const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
             const key = `db_${this.user}_${m}_${y}`;
             let data = JSON.parse(localStorage.getItem(key) || "{}");
             data[this.selI] = { done: done, note: document.getElementById('m-note').value };
             localStorage.setItem(key, JSON.stringify(data));
-            document.getElementById('modal').style.display = 'none';
-            this.renderCalendar();
+            document.getElementById('modal').style.display = 'none'; this.renderCalendar();
+        },
+        addMusic() {
+            const t = document.getElementById('p-title').value, u = document.getElementById('p-url').value;
+            if(!t || !u) return;
+            let list = JSON.parse(localStorage.getItem(`music_${this.user}`) || "[]");
+            list.push({t, u}); localStorage.setItem(`music_${this.user}`, JSON.stringify(list));
+            document.getElementById('p-title').value = ""; document.getElementById('p-url').value = "";
+            this.renderMusic();
+        },
+        renderMusic() {
+            const list = JSON.parse(localStorage.getItem(`music_${this.user}`) || "[]");
+            document.getElementById('playlist-list').innerHTML = list.map((m, i) => `
+                <div class="playlist-item">
+                    <a href="${m.u}" target="_blank" style="color:white; text-decoration:none;">▶️ ${m.t}</a>
+                    <span onclick="app.delMusic(${i})" style="cursor:pointer; font-size:0.6rem;">❌</span>
+                </div>
+            `).join('');
+        },
+        delMusic(i) {
+            let list = JSON.parse(localStorage.getItem(`music_${this.user}`) || "[]");
+            list.splice(i, 1); localStorage.setItem(`music_${this.user}`, JSON.stringify(list));
+            this.renderMusic();
         },
         changeMonth(v) { this.viewDate.setMonth(this.viewDate.getMonth() + v); this.renderCalendar(); }
     };
