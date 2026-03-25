@@ -3,185 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Max&Lili Wellness Pro</title>
+    <title>Max&Lili Wellness Hub</title>
     <style>
         :root { 
-            --bg: #f0f2f5; --card: #ffffff; --text: #2d3436;
+            --bg: #f8f9fa; --card: #ffffff; --text: #2d3436;
             --max-primary: #0984e3; --lili-primary: #d63031;
             --well-primary: #10ac84; --track-primary: #6c5ce7;
-            --club-gold: #d4af37;
-            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --club-gold: #d4af37; --shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; }
-        .header { text-align: center; padding: 20px; background: white; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 100px; }
+        .header { text-align: center; padding: 15px; background: white; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
-
-        .user-selector { display: flex; gap: 12px; margin-bottom: 20px; }
-        .btn-user { flex: 1; padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; color: white; font-size: 0.95rem; }
+        .user-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-user { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; color: white; opacity: 0.6; transition: 0.3s; }
         .btn-max { background: var(--max-primary); }
         .btn-lili { background: var(--lili-primary); }
-        .btn-user.active { outline: 3px solid #2d3436; transform: scale(0.96); }
+        .btn-user.active { opacity: 1; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
-        #main-content { display: none; }
-        .card { background: var(--card); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
-        .section-title { font-size: 0.75rem; font-weight: 800; color: #636e72; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+        .card { background: var(--card); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 20px; }
+        .section-title { font-size: 0.75rem; font-weight: 800; color: #636e72; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
 
         /* CALENDARIO */
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-        .cal-day { padding: 10px 0; font-size: 0.8rem; border-radius: 10px; background: #f1f2f6; cursor: pointer; position: relative; }
-        .cal-day.done { background: #2ecc71 !important; color: white; font-weight: bold; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 10px; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; border-radius: 12px; background: #eee; cursor: pointer; position: relative; font-weight: 600; }
+        .cal-day.done { background: #2ecc71 !important; color: white; }
+        .cal-day.has-note::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; background: #f1c40f; border-radius: 50%; }
 
-        /* CORSI CLUB ADRIANO */
-        .day-nav { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scrollbar-width: none; }
-        .day-nav button { padding: 8px 12px; border-radius: 10px; border: 1px solid #ddd; background: white; font-size: 0.7rem; font-weight: bold; }
-        .day-nav button.active { background: var(--club-gold); color: white; border-color: var(--club-gold); }
-        .course-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
-        .course-time { font-weight: 800; color: var(--well-primary); width: 55px; font-size: 0.8rem; }
+        /* WELLNESS & PLAYLIST */
+        .grid-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .link-item { padding: 12px; border-radius: 12px; text-decoration: none; color: #2d3436; background: #f1f2f6; font-size: 0.75rem; font-weight: bold; display: flex; align-items: center; gap: 8px; border: 1px solid #dfe6e9; }
+        .playlist-card { background: linear-gradient(135deg, #1db954, #191414); color: white; border: none; }
 
-        /* TRACKER */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .stat-field { background: #f8f9fa; padding: 10px; border-radius: 12px; border: 1px solid #eee; }
-        .stat-field label { display: block; font-size: 0.6rem; font-weight: bold; color: #888; }
-        .stat-field input { width: 100%; border: none; background: transparent; font-weight: bold; outline: none; }
-
-        /* WELLNESS & VIDEOS */
-        .grid-compact { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; }
-        .btn-link { padding: 12px 8px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.7rem; text-align: center; background: #f1f2f6; color: #2d3436; border: 1px solid #dfe6e9; display: flex; align-items: center; justify-content: center; }
+        /* MODALE INTEGRATA */
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-box { background: white; width: 100%; max-width: 400px; border-radius: 24px; padding: 20px; max-height: 90vh; overflow-y: auto; }
+        .course-chip { display: inline-block; padding: 6px 10px; background: #f0f2f5; border-radius: 8px; font-size: 0.7rem; margin: 3px; cursor: pointer; border: 1px solid #ddd; }
+        .course-chip:active { background: var(--club-gold); color: white; }
+        textarea { width: 100%; height: 60px; border: 1px solid #ddd; border-radius: 12px; padding: 10px; margin: 10px 0; font-size: 0.9rem; resize: none; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1 style="margin:0; font-size: 1.1rem;">🏋️ CLUB ADRIANO <span style="color:var(--club-gold)">WELLNESS PRO</span></h1>
+    <h1 style="margin:0; font-size: 1.1rem; letter-spacing: -0.5px;">🏛️ CLUB ADRIANO <span style="color:var(--club-gold)">WELLNESS HUB</span></h1>
 </div>
 
 <div class="container">
     <div class="user-selector">
-        <button id="btn-max" class="btn-user btn-max" onclick="init('max')">MASSIMO</button>
-        <button id="btn-lili" class="btn-user btn-lili" onclick="init('lili')">LILIANA</button>
+        <button id="btn-max" class="btn-user btn-max" onclick="app.setUser('max')">MASSIMO</button>
+        <button id="btn-lili" class="btn-user btn-lili" onclick="app.setUser('lili')">LILIANA</button>
     </div>
 
-    <div id="main-content">
-        <div class="card" style="border-top: 4px solid var(--club-gold);">
-            <div class="section-title" style="color:var(--club-gold);">🗓️ Orario Corsi</div>
-            <div class="day-nav" id="day-nav">
-                <button onclick="renderCorsi(1)">LUN</button><button onclick="renderCorsi(2)">MAR</button>
-                <button onclick="renderCorsi(3)">MER</button><button onclick="renderCorsi(4)">GIO</button>
-                <button onclick="renderCorsi(5)">VEN</button><button onclick="renderCorsi(6)">SAB</button>
-            </div>
-            <div id="course-list"></div>
-        </div>
-
-        <div class="card" style="border-top: 4px solid var(--track-primary);">
-            <div class="section-title" style="color:var(--track-primary);">📊 Body Tracker</div>
-            <div class="stats-grid">
-                <div class="stat-field"><label>PESO</label><input type="number" id="w" step="0.1"></div>
-                <div class="stat-field"><label>VITA</label><input type="number" id="v"></div>
-                <div class="stat-field"><label>PETTO</label><input type="number" id="p"></div>
-                <div class="stat-field"><label>COSCIA</label><input type="number" id="c"></div>
-            </div>
-            <button onclick="saveStats()" style="width:100%; padding:10px; background:var(--track-primary); color:white; border:none; border-radius:10px; font-weight:bold;">REGISTRA</button>
-            <div id="stats-h" style="font-size: 0.7rem; margin-top:10px;"></div>
-        </div>
-
+    <div id="main-app" style="display:none;">
         <div class="card">
-            <div class="cal-header">
-                <button onclick="changeMonth(-1)">❮</button>
-                <div id="month-name" style="font-weight:bold; font-size:0.8rem;">MESE</div>
-                <button onclick="changeMonth(1)">❯</button>
+            <div class="section-title">📅 Diario & Corsi</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <button onclick="app.changeMonth(-1)" style="border:none; background:none; font-size:1.2rem;">❮</button>
+                <span id="month-label" style="font-weight:900; font-size:0.9rem;"></span>
+                <button onclick="app.changeMonth(1)" style="border:none; background:none; font-size:1.2rem;">❯</button>
             </div>
             <div class="calendar-grid" id="calendar"></div>
         </div>
 
-        <div class="card" style="text-align:center;">
-            <div id="display" style="font-size: 1.8rem; font-weight: 900;">90s</div>
-            <button onclick="toggleTimer()" id="tBtn" style="background:var(--well-primary); color:white; border:none; padding:8px 20px; border-radius:8px; font-weight:bold;">START RECUPERO</button>
-        </div>
-
         <div class="card">
             <div class="section-title" style="color:var(--well-primary);">🌿 Wellness & Recovery</div>
-            <div class="grid-compact">
-                <a href="https://www.youtube.com/results?search_query=yoga+vinyasa+italiano" target="_blank" class="btn-link">🧘 Yoga</a>
-                <a href="https://www.youtube.com/results?search_query=stretching+full+body" target="_blank" class="btn-link">📏 Stretch</a>
-                <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="btn-link">🧠 Mind</a>
+            <div class="grid-links">
+                <a href="https://www.youtube.com/results?search_query=yoga+vinyasa+ita" target="_blank" class="link-item">🧘 Yoga Flow</a>
+                <a href="https://www.youtube.com/results?search_query=stretching+completo+ita" target="_blank" class="link-item">📏 Stretching</a>
+                <a href="https://www.youtube.com/results?search_query=meditazione+guidata+10+minuti" target="_blank" class="link-item">🧠 Mindset</a>
+                <a href="https://www.youtube.com/results?search_query=esercizi+respirazione+diaframmatica" target="_blank" class="link-item">🌬️ Breath</a>
             </div>
         </div>
 
-        <div id="c-max" class="user-content" style="display:none;">
-            <div class="card">
-                <div class="section-title">📋 Scheda Massimo</div>
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; border-radius:12px;">
+        <a href="https://open.spotify.com/playlist/37i9dQZF1DX76W9SwwE6fk" target="_blank" class="card link-item playlist-card">
+            <span>🎵</span>
+            <div style="flex:1">
+                <div style="font-size:0.8rem; font-weight:900">GYM ENERGY 2026</div>
+                <div style="font-size:0.6rem; opacity:0.8">La tua carica per l'allenamento</div>
             </div>
+            <span>▶️</span>
+        </a>
+
+        <div id="scheda-max" class="u-content" style="display:none;">
+            <div class="card"><div class="section-title">📋 Scheda Massimo</div><img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; border-radius:12px;"></div>
         </div>
-        <div id="c-lili" class="user-content" style="display:none;">
-            <div class="card">
-                <div class="section-title">📋 Scheda Liliana</div>
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; border-radius:12px;">
-            </div>
+        <div id="scheda-lili" class="u-content" style="display:none;">
+            <div class="card"><div class="section-title">📋 Scheda Liliana</div><img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; border-radius:12px;"></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal">
+    <div class="modal-box">
+        <h3 id="m-date" style="margin:0 0 15px 0; font-size:1.1rem;">Giorno</h3>
+        
+        <div class="section-title" style="color:var(--club-gold)">Corsi Disponibili oggi:</div>
+        <div id="m-courses" style="margin-bottom:15px;"></div>
+
+        <div class="section-title">Note Allenamento:</div>
+        <textarea id="m-note" placeholder="Esempio: Fatto 30 min cardio + corso..."></textarea>
+        
+        <div style="display:flex; gap:10px;">
+            <button onclick="app.save(true)" style="flex:1; padding:15px; background:#2ecc71; color:white; border:none; border-radius:12px; font-weight:bold;">COMPLETATO ✅</button>
+            <button onclick="app.save(false)" style="flex:1; padding:15px; background:#eee; color:#666; border:none; border-radius:12px; font-weight:bold;">CHIUDI</button>
         </div>
     </div>
 </div>
 
 <script>
-    let user = ""; let viewDate = new Date();
-    const palinsesto = {
-        1: [{h:"09:00",n:"TONE UP",i:"Beppe"}, {h:"10:15",n:"ACQUA FIT",i:"Francy"}, {h:"13:00",n:"FAT BURNS",i:"Giorgio"}, {h:"19:00",n:"TONE UP",i:"Nicola"}],
-        2: [{h:"09:00",n:"GYM DANCE",i:"Giuseppe"}, {h:"12:00",n:"AERO DANCE",i:"Nicola"}, {h:"19:00",n:"TRX",i:"Edoardo"}, {h:"20:00",n:"WALKING",i:"Duilio"}],
-        3: [{h:"09:00",n:"POSTURALE",i:"Roby"}, {h:"12:00",n:"TOTAL BODY",i:"Franklin"}, {h:"20:00",n:"PUMP",i:"Nicola"}],
-        4: [{h:"09:00",n:"TONE UP",i:"Duilio"}, {h:"10:00",n:"PILATES",i:"Giuseppe"}, {h:"20:00",n:"BODY COND.",i:"Beppe"}],
-        5: [{h:"09:00",n:"G.A.G",i:"Simo"}, {h:"13:00",n:"LATIN MOOVE",i:"Osvaldo"}, {h:"20:00",n:"TONE LIGHT",i:"Beppe"}],
-        6: [{h:"09:00",n:"YOGA",i:"Giancarlo"}, {h:"12:00",n:"FIT DANCE",i:"Stefano"}]
+    const corsiFull = {
+        1: ["09:00 Tone Up (S1)","10:15 AcquaFit (P)","13:00 Fat Burns (S1)","18:00 AeroDance (S1)","19:00 Tone Up (S1)","20:00 Spinning"],
+        2: ["09:00 GymDance (S1)","13:00 Tone Up (S1)","18:15 AcquaBike (P)","19:00 TRX (S1)","20:00 Walking (S2)"],
+        3: ["09:00 Posturale (S1)","10:15 AcquaStrong (P)","12:00 Total Body (S1)","19:30 AcquaCircuit","20:00 Pump (S1)"],
+        4: ["10:00 Pilates (S1)","13:00 Power Yoga (S1)","18:15 AcquaBike (P)","19:00 GAG (S1)","20:00 Body Condit."],
+        5: ["09:00 GAG (S1)","13:00 Latin Moove","18:00 FitDance","20:00 Tone Light"],
+        6: ["09:00 Yoga (S1)","10:00 Tone Up (S1)","12:00 FitDance (S1)"]
     };
 
-    function init(u) {
-        user = u; document.getElementById('main-content').style.display = 'block';
-        document.querySelectorAll('.user-content').forEach(c => c.style.display = 'none');
-        document.getElementById('c-'+u).style.display = 'block';
-        document.querySelectorAll('.btn-user').forEach(b => b.classList.remove('active'));
-        document.getElementById('btn-'+u).classList.add('active');
-        let d = new Date().getDay(); renderCorsi(d === 0 ? 1 : d); renderCalendar(); renderStats();
-    }
-
-    function renderCorsi(d) {
-        document.querySelectorAll('.day-nav button').forEach((b,i) => b.className = (i+1 === d ? 'active' : ''));
-        document.getElementById('course-list').innerHTML = (palinsesto[d] || []).map(c => `
-            <div class="course-row"><div class="course-time">${c.h}</div><div style="flex:1; margin-left:10px;"><strong>${c.n}</strong><br><small>${c.i}</small></div></div>
-        `).join('');
-    }
-
-    function renderCalendar() {
-        const c = document.getElementById('calendar'), m = viewDate.getMonth(), y = viewDate.getFullYear();
-        document.getElementById('month-name').innerText = new Intl.DateTimeFormat('it-IT',{month:'long',year:'numeric'}).format(viewDate).toUpperCase();
-        c.innerHTML = ""; const days = new Date(y, m+1, 0).getDate();
-        const stored = JSON.parse(localStorage.getItem(`d_${user}_${m}_${y}`) || "{}");
-        for(let i=1; i<=days; i++){
-            const d = document.createElement('div'); d.className = 'cal-day' + (stored[i]?' done':''); d.innerText = i;
-            d.onclick = () => { stored[i] = !stored[i]; localStorage.setItem(`d_${user}_${m}_${y}`, JSON.stringify(stored)); renderCalendar(); };
-            c.appendChild(d);
-        }
-    }
-
-    function saveStats() {
-        const s = { date: new Date().toLocaleDateString('it-IT'), w: document.getElementById('w').value, v: document.getElementById('v').value, p: document.getElementById('p').value, c: document.getElementById('c').value };
-        let h = JSON.parse(localStorage.getItem(`s_${user}`) || "[]"); h.unshift(s);
-        localStorage.setItem(`s_${user}`, JSON.stringify(h.slice(0,5))); renderStats();
-    }
-
-    function renderStats() {
-        const h = JSON.parse(localStorage.getItem(`s_${user}`) || "[]");
-        document.getElementById('stats-h').innerHTML = h.map(e => `<div>${e.date}: ${e.w}kg | V:${e.v} P:${e.p} C:${e.c}</div>`).join('');
-    }
-
-    function changeMonth(v) { viewDate.setMonth(viewDate.getMonth()+v); renderCalendar(); }
-
-    let sec = 90, t, run = false;
-    function toggleTimer() {
-        if(!run) { t = setInterval(() => { if(sec>0){sec--; document.getElementById('display').innerText=sec+'s';} else { clearInterval(t); sec=90; run=false; alert("Fine!"); } }, 1000); document.getElementById('tBtn').innerText="PAUSE"; }
-        else { clearInterval(t); document.getElementById('tBtn').innerText="START"; }
-        run = !run;
-    }
+    const app = {
+        user: "", viewDate: new Date(), selI: null,
+        setUser(u) {
+            this.user = u; document.getElementById('main-app').style.display = 'block';
+            document.querySelectorAll('.u-content').forEach(c => c.style.display = 'none');
+            document.getElementById('scheda-'+u).style.display = 'block';
+            document.querySelectorAll('.btn-user').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-'+u).classList.add('active');
+            this.renderCalendar();
+        },
+        renderCalendar() {
+            const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
+            document.getElementById('month-label').innerText = new Intl.DateTimeFormat('it-IT',{month:'long',year:'numeric'}).format(this.viewDate).toUpperCase();
+            const container = document.getElementById('calendar'); container.innerHTML = "";
+            const days = new Date(y, m + 1, 0).getDate();
+            const data = JSON.parse(localStorage.getItem(`db_${this.user}_${m}_${y}`) || "{}");
+            for(let i=1; i<=days; i++) {
+                const d = document.createElement('div');
+                d.className = 'cal-day' + (data[i]?.done ? ' done' : '') + (data[i]?.note ? ' has-note' : '');
+                d.innerText = i;
+                d.onclick = () => this.open(i);
+                container.appendChild(d);
+            }
+        },
+        open(i) {
+            this.selI = i;
+            const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
+            const data = JSON.parse(localStorage.getItem(`db_${this.user}_${m}_${y}`) || "{}");
+            document.getElementById('m-date').innerText = `${i} ${document.getElementById('month-label').innerText}`;
+            document.getElementById('m-note').value = data[i]?.note || "";
+            
+            // Logica Giorno Settimana per Corsi
+            const dayOfWeek = new Date(y, m, i).getDay() || 7;
+            const list = corsiFull[dayOfWeek] || ["Nessun corso previsto"];
+            document.getElementById('m-courses').innerHTML = list.map(c => 
+                `<span class="course-chip" onclick="app.addC('${c}')">${c}</span>`).join('');
+            
+            document.getElementById('modal').style.display = 'flex';
+        },
+        addC(c) { document.getElementById('m-note').value += (document.getElementById('m-note').value ? ", " : "") + c; },
+        save(done) {
+            const m = this.viewDate.getMonth(), y = this.viewDate.getFullYear();
+            const key = `db_${this.user}_${m}_${y}`;
+            let data = JSON.parse(localStorage.getItem(key) || "{}");
+            data[this.selI] = { done: done, note: document.getElementById('m-note').value };
+            localStorage.setItem(key, JSON.stringify(data));
+            document.getElementById('modal').style.display = 'none';
+            this.renderCalendar();
+        },
+        changeMonth(v) { this.viewDate.setMonth(this.viewDate.getMonth() + v); this.renderCalendar(); }
+    };
 </script>
 </body>
 </html>
