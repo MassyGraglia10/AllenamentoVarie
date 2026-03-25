@@ -24,26 +24,31 @@
 
         #main-content { display: none; }
         .workout-section { display: none; }
-        .workout-section.active { display: block; }
+        .workout-section.active { display: block; animation: fadeIn 0.3s; }
 
         .card { background: var(--card); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
         .section-title { font-size: 0.75rem; font-weight: 800; color: #636e72; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
 
-        /* TRACKER FISICO */
+        /* TRACKER FISICO AGGIORNATO */
         .stats-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .stat-field { background: #f8f9fa; padding: 10px; border-radius: 12px; border: 1px solid #eee; }
         .stat-field label { display: block; font-size: 0.65rem; font-weight: bold; color: #888; margin-bottom: 4px; }
         .stat-field input { width: 100%; border: none; background: transparent; font-size: 1rem; font-weight: bold; outline: none; }
         
         .history-list { font-size: 0.75rem; max-height: 150px; overflow-y: auto; border-top: 1px solid #eee; padding-top: 10px; }
-        .history-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
+        .history-item { padding: 8px 0; border-bottom: 1px dashed #eee; line-height: 1.2; }
 
-        /* CALENDARIO & GRIGLIE */
+        /* CALENDARIO */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
         .cal-day { padding: 10px 0; font-size: 0.8rem; border-radius: 10px; background: #f1f2f6; cursor: pointer; position: relative; }
         .cal-day.done { background: #2ecc71 !important; color: white; font-weight: bold; }
+        .cal-day.has-note::after { content: '●'; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); color: white; font-size: 8px; }
+
+        /* VIDEO & PLAYLIST */
         .grid-compact { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; }
         .btn-link { padding: 12px 8px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.7rem; text-align: center; background: #f1f2f6; color: #2d3436; border: 1px solid #dfe6e9; display: flex; align-items: center; justify-content: center; min-height: 45px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* MODALE */
         #note-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
@@ -64,36 +69,39 @@
 
     <div id="main-content">
         <div class="card" style="border-top: 4px solid var(--track-primary);">
-            <div class="section-title" style="color:var(--track-primary);">📊 Body & Health Tracker</div>
+            <div class="section-title" style="color:var(--track-primary);">📊 Progressi Fisici</div>
             <div class="stats-input-grid">
                 <div class="stat-field"><label>PESO (KG)</label><input type="number" id="body-weight" step="0.1" placeholder="00.0"></div>
                 <div class="stat-field"><label>VITA (CM)</label><input type="number" id="body-waist" placeholder="00"></div>
-                <div class="stat-field"><label>BATTITO RIPOSO</label><input type="number" id="body-hr" placeholder="60"></div>
-                <div class="stat-field"><label>% GRASSO (EST)</label><input type="number" id="body-fat" placeholder="15%"></div>
+                <div class="stat-field"><label>PETTO (CM)</label><input type="number" id="body-chest" placeholder="00"></div>
+                <div class="stat-field"><label>COSCIA (CM)</label><input type="number" id="body-thigh" placeholder="00"></div>
             </div>
-            <button onclick="savePhysicalStats()" style="width:100%; padding:12px; background:var(--track-primary); color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer; margin-bottom:15px;">REGISTRA MISURAZIONI</button>
+            <button onclick="savePhysicalStats()" style="width:100%; padding:12px; background:var(--track-primary); color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">REGISTRA MISURAZIONI</button>
             
-            <div class="history-list" id="stats-history">
-                </div>
+            <div class="history-list" id="stats-history"></div>
         </div>
 
         <div class="card">
-            <div class="section-title">📅 Allenamenti Mensili</div>
+            <div class="section-title">📅 Diario Allenamenti</div>
             <div class="calendar-grid" id="calendar"></div>
         </div>
 
-        <div class="card" style="text-align:center;">
-            <div id="display" style="font-size: 2rem; font-weight: 900; color: #2d3436;">90s</div>
-            <button onclick="toggleTimer()" id="tBtn" style="background:#2ecc71; color:white; border:none; padding:8px 20px; border-radius:10px; font-weight:bold; margin-top:5px;">START TIMER</button>
+        <div class="card" id="playlist-card" style="display:none;">
+            <div class="section-title">🎵 Le Tue Playlist</div>
+            <div id="music-grid" class="grid-compact"></div>
+            <div style="font-size: 0.6rem; color: #d63031; cursor: pointer; text-align: right; margin-top:10px;" onclick="clearMusic()">Resetta playlist</div>
         </div>
 
         <div id="content-max" class="workout-section">
             <div class="card">
                 <div class="section-title">📋 Scheda Massimo</div>
                 <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; border-radius:12px; margin-bottom:10px;">
+                <div class="section-title">📹 Video Esercizi</div>
                 <div class="grid-compact">
                     <a href="https://www.youtube.com/results?search_query=plank+tutorial" target="_blank" class="btn-link">PLANK</a>
                     <a href="https://www.youtube.com/results?search_query=lat+machine+tutorial" target="_blank" class="btn-link">LAT MACHINE</a>
+                    <a href="https://www.youtube.com/results?search_query=pullover+tutorial" target="_blank" class="btn-link">PULLOVER</a>
+                    <a href="https://www.youtube.com/results?search_query=piegamenti+tutorial" target="_blank" class="btn-link">PIEGAMENTI</a>
                 </div>
             </div>
         </div>
@@ -102,18 +110,22 @@
             <div class="card">
                 <div class="section-title">📋 Scheda Liliana</div>
                 <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; border-radius:12px; margin-bottom:10px;">
+                <div class="section-title">📹 Video Esercizi</div>
                 <div class="grid-compact">
                     <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="btn-link">CRUNCH</a>
                     <a href="https://www.youtube.com/results?search_query=leg+press" target="_blank" class="btn-link">PRESSA</a>
+                    <a href="https://www.youtube.com/results?search_query=goblet+squat" target="_blank" class="btn-link">SQUAT GOBLET</a>
+                    <a href="https://www.youtube.com/results?search_query=chest+press" target="_blank" class="btn-link">CHEST PRESS</a>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <div class="section-title" style="color:var(--well-primary);">🌿 Wellness & Mind</div>
-            <div class="grid-compact">
-                <a href="https://www.youtube.com/results?search_query=yoga+vinyasa+italiano" target="_blank" class="btn-link" style="border-left:4px solid var(--well-primary)">🧘 Yoga</a>
-                <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="btn-link" style="border-left:4px solid var(--well-primary)">🧠 Mind</a>
+            <div class="section-title">➕ Nuova Playlist</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <input type="text" id="mTitle" placeholder="Titolo (es. Rock)" style="padding:10px; border-radius:10px; border:1px solid #ddd;">
+                <input type="text" id="mLink" placeholder="Incolla Link..." style="padding:10px; border-radius:10px; border:1px solid #ddd;">
+                <button onclick="addMusic()" style="background:var(--max-primary); color:white; border:none; border-radius:10px; padding:12px; font-weight:bold;">AGGIUNGI PLAYLIST</button>
             </div>
         </div>
     </div>
@@ -121,8 +133,8 @@
 
 <div id="note-modal">
     <div class="modal-content">
-        <h3 id="modal-date">Data</h3>
-        <textarea id="note-text" rows="4" style="width:100%; margin:15px 0; border-radius:10px; padding:10px;"></textarea>
+        <h3 id="modal-date" style="margin:0">Data</h3>
+        <textarea id="note-text" rows="4" style="width:100%; margin:15px 0; border-radius:10px; padding:10px; font-family:inherit;"></textarea>
         <div style="display:flex; gap:10px;">
             <button onclick="saveNote()" style="flex:1; padding:12px; background:#2ecc71; color:white; border:none; border-radius:10px; font-weight:bold;">SALVA</button>
             <button onclick="closeModal()" style="flex:1; padding:12px; background:#b2bec3; color:white; border:none; border-radius:10px;">CHIUDI</button>
@@ -132,6 +144,7 @@
 
 <script>
     let currentUser = "";
+    let selectedDay = null;
     let viewDate = new Date();
 
     function showWorkout(user) {
@@ -143,67 +156,55 @@
         document.getElementById('btn-' + user).classList.add('active');
         renderCalendar();
         renderStatsHistory();
+        renderPlaylist();
     }
 
-    // GESTIONE STATISTICHE FISICHE
+    // STATISTICHE FISICHE
     function savePhysicalStats() {
-        const weight = document.getElementById('body-weight').value;
-        const waist = document.getElementById('body-waist').value;
-        const hr = document.getElementById('body-hr').value;
-        const fat = document.getElementById('body-fat').value;
-        
-        if(!weight) return alert("Inserisci almeno il peso!");
-
-        const newEntry = {
+        const entry = {
             date: new Date().toLocaleDateString('it-IT'),
-            weight: weight,
-            waist: waist,
-            hr: hr,
-            fat: fat
+            weight: document.getElementById('body-weight').value,
+            waist: document.getElementById('body-waist').value,
+            chest: document.getElementById('body-chest').value,
+            thigh: document.getElementById('body-thigh').value
         };
-
-        let history = JSON.parse(localStorage.getItem(`stats_${currentUser}`) || "[]");
-        history.unshift(newEntry); // Aggiungi in testa
-        localStorage.setItem(`stats_${currentUser}`, JSON.stringify(history.slice(0, 20))); // Tieni ultime 20
-        
+        if(!entry.weight) return alert("Inserisci il peso!");
+        let history = JSON.parse(localStorage.getItem(`stats_v2_${currentUser}`) || "[]");
+        history.unshift(entry);
+        localStorage.setItem(`stats_v2_${currentUser}`, JSON.stringify(history.slice(0, 15)));
         renderStatsHistory();
-        alert("Dati salvati con successo!");
     }
 
     function renderStatsHistory() {
-        const history = JSON.parse(localStorage.getItem(`stats_${currentUser}`) || "[]");
+        const history = JSON.parse(localStorage.getItem(`stats_v2_${currentUser}`) || "[]");
         const container = document.getElementById('stats-history');
-        if(history.length === 0) {
-            container.innerHTML = "<p style='color:#999; text-align:center;'>Nessun dato registrato</p>";
-            return;
-        }
-        container.innerHTML = history.map(entry => `
+        container.innerHTML = history.length ? history.map(e => `
             <div class="history-item">
-                <span><strong>${entry.date}</strong></span>
-                <span>${entry.weight}kg | Vita: ${entry.waist}cm | HR: ${entry.hr}</span>
+                <strong>${e.date}</strong>: ${e.weight}kg | Vita: ${e.waist}cm | Petto: ${e.chest}cm | Coscia: ${e.thigh}cm
             </div>
-        `).join('');
+        `).join('') : "<p style='color:#999; text-align:center;'>Nessun dato</p>";
     }
 
-    // CALENDARIO SEMPLICE
+    // CALENDARIO
     function renderCalendar() {
         const container = document.getElementById('calendar');
         container.innerHTML = "";
-        const daysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate();
-        const data = JSON.parse(localStorage.getItem(`data_${currentUser}_${viewDate.getMonth()}_${viewDate.getFullYear()}`) || "{}");
-        
+        const m = viewDate.getMonth(), y = viewDate.getFullYear();
+        const daysInMonth = new Date(y, m + 1, 0).getDate();
+        const data = JSON.parse(localStorage.getItem(`data_${currentUser}_${m}_${y}`) || "{}");
         for (let i = 1; i <= daysInMonth; i++) {
             const day = document.createElement('div');
-            day.className = 'cal-day' + (data[i] ? ' done' : '');
+            day.className = 'cal-day' + (data[i] ? ' done' : '') + (data[i]?.text ? ' has-note' : '');
             day.innerText = i;
-            day.onclick = () => openModal(i);
+            day.onclick = () => { selectedDay = i; openModal(i); };
             container.appendChild(day);
         }
     }
 
     function openModal(d) {
-        selectedDay = d;
-        document.getElementById('modal-date').innerText = d + " Workout";
+        const data = JSON.parse(localStorage.getItem(`data_${currentUser}_${viewDate.getMonth()}_${viewDate.getFullYear()}`) || "{}");
+        document.getElementById('modal-date').innerText = d + " Allenamento";
+        document.getElementById('note-text').value = data[d]?.text || "";
         document.getElementById('note-modal').style.display = 'flex';
     }
 
@@ -216,18 +217,27 @@
     }
     function closeModal() { document.getElementById('note-modal').style.display = 'none'; }
 
-    // TIMER
-    let timeLeft = 90, timer, running = false;
-    function toggleTimer() {
-        if(!running) {
-            timer = setInterval(() => { 
-                if(timeLeft > 0){ timeLeft--; document.getElementById('display').innerText = timeLeft + 's'; }
-                else { clearInterval(timer); timeLeft = 90; running = false; alert("Recupero finito!"); }
-            }, 1000);
-            document.getElementById('tBtn').innerText = "PAUSE";
-        } else { clearInterval(timer); document.getElementById('tBtn').innerText = "START"; }
-        running = !running;
+    // PLAYLIST
+    function addMusic() {
+        const title = document.getElementById('mTitle').value || "Playlist";
+        const link = document.getElementById('mLink').value;
+        if(link) {
+            let list = JSON.parse(localStorage.getItem('play_v5_' + currentUser) || "[]");
+            list.push({ title: title.toUpperCase(), link: link });
+            localStorage.setItem('play_v5_' + currentUser, JSON.stringify(list));
+            document.getElementById('mTitle').value = ""; document.getElementById('mLink').value = "";
+            renderPlaylist();
+        }
     }
+
+    function renderPlaylist() {
+        const list = JSON.parse(localStorage.getItem('play_v5_' + currentUser) || "[]");
+        const container = document.getElementById('music-grid');
+        document.getElementById('playlist-card').style.display = list.length ? 'block' : 'none';
+        container.innerHTML = list.map(i => `<a class="btn-link" href="${i.link}" target="_blank" style="background:${currentUser === 'max' ? 'var(--max-primary)' : 'var(--lili-primary)'}; color:white;">${i.title}</a>`).join('');
+    }
+
+    function clearMusic() { localStorage.removeItem('play_v5_' + currentUser); renderPlaylist(); }
 </script>
 </body>
 </html>
