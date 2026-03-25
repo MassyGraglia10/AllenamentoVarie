@@ -3,57 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Max&Lili Wellness</title>
+    <title>Max&Lili Wellness Pro</title>
     <style>
         :root { 
-            --bg: #f4f7f6; --card: #ffffff; --text: #2d3436;
+            --bg: #f0f2f5; --card: #ffffff; --text: #2d3436;
             --max-primary: #0984e3; --lili-primary: #d63031;
-            --well-primary: #10ac84;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --well-primary: #10ac84; --track-primary: #6c5ce7;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 60px; line-height: 1.4; }
-        .header { text-align: center; padding: 20px; background: white; box-shadow: var(--shadow); border-bottom: 1px solid #dfe6e9; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; }
+        .header { text-align: center; padding: 20px; background: white; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
 
-        .user-selector { display: flex; gap: 12px; margin-bottom: 25px; }
-        .btn-user { flex: 1; padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; color: white; transition: 0.3s; font-size: 0.95rem; letter-spacing: 1px; }
-        .btn-max { background: var(--max-primary); box-shadow: 0 4px 10px rgba(9, 132, 227, 0.3); }
-        .btn-lili { background: var(--lili-primary); box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3); }
-        .btn-user.active { transform: scale(0.95); outline: 3px solid #2d3436; }
+        .user-selector { display: flex; gap: 12px; margin-bottom: 20px; }
+        .btn-user { flex: 1; padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; color: white; font-size: 0.95rem; }
+        .btn-max { background: var(--max-primary); }
+        .btn-lili { background: var(--lili-primary); }
+        .btn-user.active { outline: 3px solid #2d3436; transform: scale(0.96); }
 
         #main-content { display: none; }
         .workout-section { display: none; }
-        .workout-section.active { display: block; animation: slideUp 0.4s ease-out; }
+        .workout-section.active { display: block; }
 
-        .card { background: var(--card); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 18px; border: 1px solid rgba(0,0,0,0.03); }
-        .section-title { font-size: 0.75rem; font-weight: 800; color: #636e72; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 5px; }
+        .card { background: var(--card); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
+        .section-title { font-size: 0.75rem; font-weight: 800; color: #636e72; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
 
-        /* CALENDARIO */
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        /* TRACKER FISICO */
+        .stats-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-field { background: #f8f9fa; padding: 10px; border-radius: 12px; border: 1px solid #eee; }
+        .stat-field label { display: block; font-size: 0.65rem; font-weight: bold; color: #888; margin-bottom: 4px; }
+        .stat-field input { width: 100%; border: none; background: transparent; font-size: 1rem; font-weight: bold; outline: none; }
+        
+        .history-list { font-size: 0.75rem; max-height: 150px; overflow-y: auto; border-top: 1px solid #eee; padding-top: 10px; }
+        .history-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
+
+        /* CALENDARIO & GRIGLIE */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-        .cal-day { padding: 10px 0; font-size: 0.8rem; border-radius: 10px; background: #f1f2f6; cursor: pointer; border: 1px solid #eee; position: relative; }
-        .cal-day.done { background: #2ecc71 !important; color: white; font-weight: bold; border-color: #27ae60; }
-        .cal-day.has-note::after { content: '●'; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); color: white; font-size: 8px; }
-        .btn-cal { background: #dfe6e9; border: none; border-radius: 8px; cursor: pointer; padding: 6px 12px; font-weight: bold; }
-
-        /* GRIGLIE E LINK */
+        .cal-day { padding: 10px 0; font-size: 0.8rem; border-radius: 10px; background: #f1f2f6; cursor: pointer; position: relative; }
+        .cal-day.done { background: #2ecc71 !important; color: white; font-weight: bold; }
         .grid-compact { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; }
-        .btn-link { padding: 12px 8px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.7rem; text-align: center; background: #f1f2f6; color: #2d3436; border: 1px solid #dfe6e9; min-height: 45px; display: flex; align-items: center; justify-content: center; }
-        .well-link { border-left: 4px solid var(--well-primary); background: #f0fff4; }
+        .btn-link { padding: 12px 8px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.7rem; text-align: center; background: #f1f2f6; color: #2d3436; border: 1px solid #dfe6e9; display: flex; align-items: center; justify-content: center; min-height: 45px; }
 
         /* MODALE */
         #note-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-content { background: white; padding: 25px; border-radius: 24px; width: 85%; max-width: 380px; }
-        textarea { width: 100%; border: 1px solid #dfe6e9; border-radius: 12px; padding: 12px; box-sizing: border-box; margin: 15px 0; font-family: inherit; background: #f9f9f9; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1 style="margin:0; font-size: 1.3rem; letter-spacing: -0.5px;">✨ MAX&LILI <span style="color:var(--well-primary)">WELLNESS</span></h1>
+    <h1 style="margin:0; font-size: 1.2rem;">✨ MAX&LILI <span style="color:var(--well-primary)">WELLNESS PRO</span></h1>
 </div>
 
 <div class="container">
@@ -63,38 +63,37 @@
     </div>
 
     <div id="main-content">
-        <div class="card">
-            <div class="cal-header">
-                <button class="btn-cal" onclick="changeMonth(-1)">❮</button>
-                <div id="current-month-display" style="font-weight:800; font-size:0.95rem;">MESE</div>
-                <button class="btn-cal" onclick="changeMonth(1)">❯</button>
+        <div class="card" style="border-top: 4px solid var(--track-primary);">
+            <div class="section-title" style="color:var(--track-primary);">📊 Body & Health Tracker</div>
+            <div class="stats-input-grid">
+                <div class="stat-field"><label>PESO (KG)</label><input type="number" id="body-weight" step="0.1" placeholder="00.0"></div>
+                <div class="stat-field"><label>VITA (CM)</label><input type="number" id="body-waist" placeholder="00"></div>
+                <div class="stat-field"><label>BATTITO RIPOSO</label><input type="number" id="body-hr" placeholder="60"></div>
+                <div class="stat-field"><label>% GRASSO (EST)</label><input type="number" id="body-fat" placeholder="15%"></div>
             </div>
-            <div id="calendar" class="calendar-grid"></div>
+            <button onclick="savePhysicalStats()" style="width:100%; padding:12px; background:var(--track-primary); color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer; margin-bottom:15px;">REGISTRA MISURAZIONI</button>
+            
+            <div class="history-list" id="stats-history">
+                </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📅 Allenamenti Mensili</div>
+            <div class="calendar-grid" id="calendar"></div>
         </div>
 
         <div class="card" style="text-align:center;">
-            <div id="display" style="font-size: 2.5rem; font-weight: 900; margin: 5px 0;">90s</div>
-            <div style="display:flex; gap:10px; justify-content:center;">
-                <button onclick="toggleTimer()" id="tBtn" style="background:#2ecc71; color:white; border:none; padding:10px 25px; border-radius:10px; font-weight:bold;">START</button>
-                <button onclick="resetTimer()" style="background:#b2bec3; color:white; border:none; padding:10px 25px; border-radius:10px; font-weight:bold;">RESET</button>
-            </div>
-        </div>
-
-        <div class="card" id="playlist-card" style="display:none;">
-            <div class="section-title">🎵 Sound Performance</div>
-            <div id="music-grid" class="grid-compact"></div>
-            <div style="font-size: 0.6rem; color: #d63031; cursor: pointer; text-align: right; margin-top:10px;" onclick="clearMusic()">Reset musica</div>
+            <div id="display" style="font-size: 2rem; font-weight: 900; color: #2d3436;">90s</div>
+            <button onclick="toggleTimer()" id="tBtn" style="background:#2ecc71; color:white; border:none; padding:8px 20px; border-radius:10px; font-weight:bold; margin-top:5px;">START TIMER</button>
         </div>
 
         <div id="content-max" class="workout-section">
             <div class="card">
                 <div class="section-title">📋 Scheda Massimo</div>
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; border-radius:12px; margin-bottom:15px;">
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; border-radius:12px; margin-bottom:10px;">
                 <div class="grid-compact">
                     <a href="https://www.youtube.com/results?search_query=plank+tutorial" target="_blank" class="btn-link">PLANK</a>
                     <a href="https://www.youtube.com/results?search_query=lat+machine+tutorial" target="_blank" class="btn-link">LAT MACHINE</a>
-                    <a href="https://www.youtube.com/results?search_query=pullover+tutorial" target="_blank" class="btn-link">PULLOVER</a>
-                    <a href="https://www.youtube.com/results?search_query=piegamenti+tutorial" target="_blank" class="btn-link">PIEGAMENTI</a>
                 </div>
             </div>
         </div>
@@ -102,32 +101,19 @@
         <div id="content-lili" class="workout-section">
             <div class="card">
                 <div class="section-title">📋 Scheda Liliana</div>
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; border-radius:12px; margin-bottom:15px;">
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; border-radius:12px; margin-bottom:10px;">
                 <div class="grid-compact">
                     <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="btn-link">CRUNCH</a>
                     <a href="https://www.youtube.com/results?search_query=leg+press" target="_blank" class="btn-link">PRESSA</a>
-                    <a href="https://www.youtube.com/results?search_query=goblet+squat" target="_blank" class="btn-link">SQUAT GOBLET</a>
-                    <a href="https://www.youtube.com/results?search_query=chest+press" target="_blank" class="btn-link">CHEST PRESS</a>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <div class="section-title" style="color:var(--well-primary);">🌿 Wellness & Recovery</div>
+            <div class="section-title" style="color:var(--well-primary);">🌿 Wellness & Mind</div>
             <div class="grid-compact">
-                <a href="https://www.youtube.com/results?search_query=yoga+vinyasa+italiano" target="_blank" class="btn-link well-link">🧘 Yoga Flow</a>
-                <a href="https://www.youtube.com/results?search_query=meditazione+guidata+italiano" target="_blank" class="btn-link well-link">🧠 Mind</a>
-                <a href="https://www.youtube.com/results?search_query=stretching+full+body+italiano" target="_blank" class="btn-link well-link">📏 Stretch</a>
-                <a href="https://www.youtube.com/results?search_query=respirazione+diaframmatica" target="_blank" class="btn-link well-link">🌬️ Breath</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="section-title">➕ Aggiungi Playlist</div>
-            <input type="text" id="mTitle" placeholder="Titolo (es. Rock)" style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:8px; box-sizing:border-box;">
-            <div style="display:flex; gap:8px;">
-                <input type="text" id="mLink" placeholder="Link Spotify o YouTube..." style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;">
-                <button onclick="addMusic()" style="background:var(--max-primary); color:white; border:none; border-radius:10px; padding:0 20px; font-weight:bold;">OK</button>
+                <a href="https://www.youtube.com/results?search_query=yoga+vinyasa+italiano" target="_blank" class="btn-link" style="border-left:4px solid var(--well-primary)">🧘 Yoga</a>
+                <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="btn-link" style="border-left:4px solid var(--well-primary)">🧠 Mind</a>
             </div>
         </div>
     </div>
@@ -135,19 +121,17 @@
 
 <div id="note-modal">
     <div class="modal-content">
-        <h3 id="modal-date" style="margin-top:0;">Giorno</h3>
-        <textarea id="note-text" rows="4" placeholder="Note allenamento..."></textarea>
+        <h3 id="modal-date">Data</h3>
+        <textarea id="note-text" rows="4" style="width:100%; margin:15px 0; border-radius:10px; padding:10px;"></textarea>
         <div style="display:flex; gap:10px;">
-            <button onclick="saveNote()" style="background:#2ecc71; color:white; border:none; padding:12px; border-radius:10px; flex:1; font-weight:bold;">SALVA</button>
-            <button onclick="closeModal()" style="background:#b2bec3; color:white; border:none; padding:12px; border-radius:10px; flex:1; font-weight:bold;">CHIUDI</button>
+            <button onclick="saveNote()" style="flex:1; padding:12px; background:#2ecc71; color:white; border:none; border-radius:10px; font-weight:bold;">SALVA</button>
+            <button onclick="closeModal()" style="flex:1; padding:12px; background:#b2bec3; color:white; border:none; border-radius:10px;">CHIUDI</button>
         </div>
-        <button onclick="deleteNote()" style="width:100%; background:none; border:none; color:red; margin-top:20px; font-size:0.75rem; text-decoration:underline;">Elimina allenamento</button>
     </div>
 </div>
 
 <script>
     let currentUser = "";
-    let selectedDay = null;
     let viewDate = new Date();
 
     function showWorkout(user) {
@@ -158,34 +142,68 @@
         document.getElementById('content-' + user).classList.add('active');
         document.getElementById('btn-' + user).classList.add('active');
         renderCalendar();
-        renderPlaylist();
+        renderStatsHistory();
     }
 
+    // GESTIONE STATISTICHE FISICHE
+    function savePhysicalStats() {
+        const weight = document.getElementById('body-weight').value;
+        const waist = document.getElementById('body-waist').value;
+        const hr = document.getElementById('body-hr').value;
+        const fat = document.getElementById('body-fat').value;
+        
+        if(!weight) return alert("Inserisci almeno il peso!");
+
+        const newEntry = {
+            date: new Date().toLocaleDateString('it-IT'),
+            weight: weight,
+            waist: waist,
+            hr: hr,
+            fat: fat
+        };
+
+        let history = JSON.parse(localStorage.getItem(`stats_${currentUser}`) || "[]");
+        history.unshift(newEntry); // Aggiungi in testa
+        localStorage.setItem(`stats_${currentUser}`, JSON.stringify(history.slice(0, 20))); // Tieni ultime 20
+        
+        renderStatsHistory();
+        alert("Dati salvati con successo!");
+    }
+
+    function renderStatsHistory() {
+        const history = JSON.parse(localStorage.getItem(`stats_${currentUser}`) || "[]");
+        const container = document.getElementById('stats-history');
+        if(history.length === 0) {
+            container.innerHTML = "<p style='color:#999; text-align:center;'>Nessun dato registrato</p>";
+            return;
+        }
+        container.innerHTML = history.map(entry => `
+            <div class="history-item">
+                <span><strong>${entry.date}</strong></span>
+                <span>${entry.weight}kg | Vita: ${entry.waist}cm | HR: ${entry.hr}</span>
+            </div>
+        `).join('');
+    }
+
+    // CALENDARIO SEMPLICE
     function renderCalendar() {
         const container = document.getElementById('calendar');
         container.innerHTML = "";
-        const m = viewDate.getMonth(), y = viewDate.getFullYear();
-        document.getElementById('current-month-display').innerText = new Intl.DateTimeFormat('it-IT', { month: 'long', year: 'numeric' }).format(viewDate).toUpperCase();
-        const firstDay = new Date(y, m, 1).getDay();
-        const daysInMonth = new Date(y, m + 1, 0).getDate();
-        let offset = firstDay === 0 ? 6 : firstDay - 1;
-        for(let j=0; j<offset; j++) container.appendChild(document.createElement('div'));
-        const data = JSON.parse(localStorage.getItem(`data_${currentUser}_${m}_${y}`) || "{}");
+        const daysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate();
+        const data = JSON.parse(localStorage.getItem(`data_${currentUser}_${viewDate.getMonth()}_${viewDate.getFullYear()}`) || "{}");
+        
         for (let i = 1; i <= daysInMonth; i++) {
             const day = document.createElement('div');
-            day.className = 'cal-day' + (data[i] ? ' done' : '') + (data[i] && data[i].text ? ' has-note' : '');
+            day.className = 'cal-day' + (data[i] ? ' done' : '');
             day.innerText = i;
             day.onclick = () => openModal(i);
             container.appendChild(day);
         }
     }
 
-    function changeMonth(v) { viewDate.setMonth(viewDate.getMonth() + v); renderCalendar(); }
     function openModal(d) {
         selectedDay = d;
-        const data = JSON.parse(localStorage.getItem(`data_${currentUser}_${viewDate.getMonth()}_${viewDate.getFullYear()}`) || "{}");
-        document.getElementById('modal-date').innerText = d + " " + document.getElementById('current-month-display').innerText;
-        document.getElementById('note-text').value = data[d] ? data[d].text : "";
+        document.getElementById('modal-date').innerText = d + " Workout";
         document.getElementById('note-modal').style.display = 'flex';
     }
 
@@ -196,49 +214,20 @@
         localStorage.setItem(key, JSON.stringify(data));
         closeModal(); renderCalendar();
     }
-
-    function deleteNote() {
-        const key = `data_${currentUser}_${viewDate.getMonth()}_${viewDate.getFullYear()}`;
-        let data = JSON.parse(localStorage.getItem(key) || "{}");
-        delete data[selectedDay];
-        localStorage.setItem(key, JSON.stringify(data));
-        closeModal(); renderCalendar();
-    }
     function closeModal() { document.getElementById('note-modal').style.display = 'none'; }
 
-    function addMusic() {
-        const title = document.getElementById('mTitle').value || "Playlist";
-        const link = document.getElementById('mLink').value;
-        if(link) {
-            let list = JSON.parse(localStorage.getItem('playlist_final_' + currentUser) || "[]");
-            list.push({ title: title.toUpperCase(), link: link });
-            localStorage.setItem('playlist_final_' + currentUser, JSON.stringify(list));
-            document.getElementById('mTitle').value = ""; document.getElementById('mLink').value = "";
-            renderPlaylist();
-        }
-    }
-
-    function renderPlaylist() {
-        const list = JSON.parse(localStorage.getItem('playlist_final_' + currentUser) || "[]");
-        const container = document.getElementById('music-grid');
-        const color = currentUser === 'max' ? 'var(--max-primary)' : 'var(--lili-primary)';
-        if(list.length > 0) {
-            document.getElementById('playlist-card').style.display = 'block';
-            container.innerHTML = list.map(item => `<a class="btn-link" style="background:${color}; color:white;" href="${item.link}" target="_blank">${item.title}</a>`).join('');
-        } else document.getElementById('playlist-card').style.display = 'none';
-    }
-
-    function clearMusic() { localStorage.removeItem('playlist_final_' + currentUser); renderPlaylist(); }
-
+    // TIMER
     let timeLeft = 90, timer, running = false;
     function toggleTimer() {
-        if(!running) { 
-            timer = setInterval(() => { if(timeLeft > 0){ timeLeft--; document.getElementById('display').innerText = timeLeft + 's'; } else { clearInterval(timer); resetTimer(); alert('Recupero terminato!'); } }, 1000); 
-            document.getElementById('tBtn').innerText = 'PAUSE'; 
-        } else { clearInterval(timer); document.getElementById('tBtn').innerText = 'START'; }
+        if(!running) {
+            timer = setInterval(() => { 
+                if(timeLeft > 0){ timeLeft--; document.getElementById('display').innerText = timeLeft + 's'; }
+                else { clearInterval(timer); timeLeft = 90; running = false; alert("Recupero finito!"); }
+            }, 1000);
+            document.getElementById('tBtn').innerText = "PAUSE";
+        } else { clearInterval(timer); document.getElementById('tBtn').innerText = "START"; }
         running = !running;
     }
-    function resetTimer() { clearInterval(timer); timeLeft = 90; running = false; document.getElementById('display').innerText = '90s'; document.getElementById('tBtn').innerText = 'START'; }
 </script>
 </body>
 </html>
