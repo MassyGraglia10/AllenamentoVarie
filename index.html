@@ -6,112 +6,162 @@
     <title>Workout Hub - Max & Lili</title>
     <style>
         :root { 
-            --bg: #0f1113; --card: #1a1d21; --max-color: #2196f3; 
-            --lili-color: #e91e63; --text: #eceff1; --accent: #ff9800; 
+            --bg: #f4f7f6; --card: #ffffff; --text: #2c3e50;
+            --max-color: #3498db; --lili-color: #e91e63;
+            --yoga: #8e44ad; --pilates: #2980b9; --mind: #16a085;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; line-height: 1.6; }
         
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 1.5rem; margin-bottom: 5px; letter-spacing: 1px; }
-        .header p { color: #888; font-size: 0.9rem; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 40px; }
+        .header { text-align: center; padding: 20px; background: white; box-shadow: var(--shadow); border-bottom: 2px solid #eee; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
 
-        /* Selettore Utente */
-        .selector-container { display: flex; gap: 15px; margin-bottom: 30px; }
-        .user-btn { 
-            flex: 1; padding: 18px; border-radius: 15px; border: none; 
-            font-weight: 800; cursor: pointer; text-transform: uppercase; 
-            transition: all 0.3s ease; font-size: 1rem; color: white; opacity: 0.3;
-        }
-        .btn-max { background: linear-gradient(135deg, #1e88e5, #1565c0); }
-        .btn-lili { background: linear-gradient(135deg, #d81b60, #ad1457); }
-        .user-btn.active { opacity: 1; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 2px solid white; }
+        /* CRONOMETRO RECUPERO */
+        .timer-box { background: #2c3e50; color: white; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-around; }
+        .timer-display { font-size: 2rem; font-weight: bold; font-family: monospace; }
+        .timer-btn { background: #27ae60; border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .timer-btn.stop { background: #e74c3c; }
 
-        /* Sezioni Scheda */
-        .workout-content { display: none; }
-        .workout-content.active { display: block; animation: slideUp 0.4s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* SELETTORE PROFILO */
+        .user-selector { display: flex; gap: 15px; margin-bottom: 25px; }
+        .btn-user { flex: 1; padding: 18px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; color: white; opacity: 0.4; transition: 0.3s; }
+        .btn-max { background: var(--max-color); }
+        .btn-lili { background: var(--lili-color); }
+        .btn-user.active { opacity: 1; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 2px solid #fff; }
 
-        .image-container { position: relative; margin-bottom: 25px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .scheda-img { width: 100%; display: block; filter: brightness(0.9); transition: 0.3s; }
-        .scheda-img:hover { filter: brightness(1); }
+        /* CONTENUTI */
+        .workout-section { display: none; }
+        .workout-section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Video Tutorial */
-        .section-label { 
-            display: flex; align-items: center; gap: 10px; color: var(--accent); 
-            font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .grid-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
-        .video-card { 
-            background: var(--card); border: 1px solid #333; color: white; padding: 15px; 
-            border-radius: 12px; text-decoration: none; text-align: center; font-size: 0.85rem; 
-            font-weight: 600; transition: 0.2s; display: flex; align-items: center; justify-content: center;
-        }
-        .video-card:active { background: #333; transform: scale(0.95); }
+        .card { background: var(--card); border-radius: 20px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 25px; border: 1px solid #eee; }
+        .scheda-img { width: 100%; border-radius: 15px; border: 1px solid #ddd; }
+        
+        .section-label { color: #7f8c8d; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 15px; display: block; letter-spacing: 1px; }
 
-        .footer-note { text-align: center; margin-top: 40px; padding: 20px; color: #555; font-size: 0.8rem; border-top: 1px solid #222; }
+        /* GRIGLIA VIDEO */
+        .grid-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+        .video-btn { background: #f8f9fa; border: 1px solid #eee; color: var(--text); padding: 12px; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.8rem; font-weight: 600; }
+        .video-btn:hover { border-color: var(--max-color); background: #fff; }
+
+        /* EXTRA */
+        .extra-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .btn-extra { padding: 15px; border-radius: 12px; text-decoration: none; color: white; text-align: center; font-weight: bold; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>🏋️ WORKOUT HUB</h1>
-    <p>Massimo & Liliana - Training Sessions</p>
+    <p style="margin:5px 0 0; color:#888;">Massimo & Liliana Training</p>
 </div>
 
-<div class="selector-container">
-    <button id="btn-max" class="user-btn btn-max" onclick="switchUser('max')">♂ Massimo</button>
-    <button id="btn-lili" class="user-btn btn-lili" onclick="switchUser('lili')">♀ Liliana</button>
-</div>
-
-<div id="content-max" class="workout-content">
-    <div class="image-container">
-        <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" class="scheda-img" alt="Scheda Max">
-    </div>
-    
-    <div class="section-label">🎬 Video Esecuzione</div>
-    <div class="grid-videos">
-        <a href="https://www.youtube.com/results?search_query=chest+fly+dumbbells" target="_blank" class="video-card">CHEST FLY</a>
-        <a href="https://www.youtube.com/results?search_query=squat+bilanciere" target="_blank" class="video-card">SQUAT</a>
-        <a href="https://www.youtube.com/results?search_query=rematore+manubrio" target="_blank" class="video-card">REMATORE</a>
-        <a href="https://www.youtube.com/results?search_query=military+press" target="_blank" class="video-card">MILITARY PRESS</a>
-        <a href="https://www.youtube.com/results?search_query=hammer+curl" target="_blank" class="video-card">HAMMER CURL</a>
-        <a href="https://www.youtube.com/results?search_query=plank+corretto" target="_blank" class="video-card">PLANK</a>
-    </div>
-</div>
-
-<div id="content-lili" class="workout-content">
-    <div class="image-container">
-        <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" class="scheda-img" alt="Scheda Lili">
+<div class="container">
+    <div class="timer-box">
+        <div><span class="section-label" style="color:#bdc3c7; margin:0;">Recupero</span></div>
+        <div class="timer-display" id="display">01:30</div>
+        <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">START</button>
+        <button class="timer-btn stop" onclick="resetTimer()">RESET</button>
     </div>
 
-    <div class="section-label">🎬 Video Esecuzione</div>
-    <div class="grid-videos">
-        <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="video-card">1. CRUNCH</a>
-        <a href="https://www.youtube.com/results?search_query=leg+press+machine" target="_blank" class="video-card">2. PRESSA</a>
-        <a href="https://www.youtube.com/results?search_query=leg+extension+tutorial" target="_blank" class="video-card">3. LEG EXTENSION</a>
-        <a href="https://www.youtube.com/results?search_query=goblet+squat+kettlebell" target="_blank" class="video-card">4. SQUAT GOBLET</a>
-        <a href="https://www.youtube.com/results?search_query=chest+press+machine" target="_blank" class="video-card">CHEST PRESS</a>
-        <a href="https://www.youtube.com/results?search_query=lat+machine+tutorial" target="_blank" class="video-card">LAT MACHINE</a>
+    <div class="user-selector">
+        <button id="tab-max" class="btn-user btn-max" onclick="showTab('max')">♂ Massimo</button>
+        <button id="tab-lili" class="btn-user btn-lili" onclick="showTab('lili')">♀ Liliana</button>
     </div>
-</div>
 
-<div class="footer-note">
-    © 2026 Training Sync • Massimo & Liliana
+    <div id="content-max" class="workout-section">
+        <div class="card">
+            <span class="section-label">Scheda Massimo</span>
+            <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" class="scheda-img">
+        </div>
+        <div class="card">
+            <span class="section-label">Tutorial Esercizi</span>
+            <div class="grid-videos">
+                <a href="https://www.youtube.com/results?search_query=chest+fly+dumbbells" target="_blank" class="video-btn">CHEST FLY</a>
+                <a href="https://www.youtube.com/results?search_query=squat+bilanciere" target="_blank" class="video-btn">SQUAT</a>
+                <a href="https://www.youtube.com/results?search_query=rematore+manubrio" target="_blank" class="video-btn">REMATORE</a>
+                <a href="https://www.youtube.com/results?search_query=military+press" target="_blank" class="video-btn">MILITARY PRESS</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="content-lili" class="workout-section">
+        <div class="card">
+            <span class="section-label">Scheda Liliana</span>
+            <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" class="scheda-img">
+        </div>
+        <div class="card">
+            <span class="section-label">Tutorial Esercizi</span>
+            <div class="grid-videos">
+                <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="video-btn">CRUNCH</a>
+                <a href="https://www.youtube.com/results?search_query=leg+press" target="_blank" class="video-btn">PRESSA</a>
+                <a href="https://www.youtube.com/results?search_query=leg+extension" target="_blank" class="video-btn">LEG EXTENSION</a>
+                <a href="https://www.youtube.com/results?search_query=goblet+squat" target="_blank" class="video-btn">SQUAT GOBLET</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <span class="section-label">Wellness & Mind</span>
+        <div class="extra-btns">
+            <a href="https://www.youtube.com/results?search_query=yoga+italiano" target="_blank" class="btn-extra" style="background:var(--yoga)">YOGA</a>
+            <a href="https://www.youtube.com/results?search_query=pilates+italiano" target="_blank" class="btn-extra" style="background:var(--pilates)">PILATES</a>
+            <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="btn-extra" style="background:var(--mind)">MIND</a>
+        </div>
+    </div>
 </div>
 
 <script>
-    function switchUser(user) {
-        // Rimuovi classi active
-        document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.workout-content').forEach(c => c.classList.remove('active'));
-
-        // Attiva selezione
-        document.getElementById('btn-' + user).classList.add('active');
+    // Gestione Tab
+    function showTab(user) {
+        document.querySelectorAll('.workout-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.btn-user').forEach(b => b.classList.remove('active'));
         document.getElementById('content-' + user).classList.add('active');
-        
-        // Vibrazione feedback (se supportata)
-        if (window.navigator.vibrate) window.navigator.vibrate(50);
+        document.getElementById('tab-' + user).classList.add('active');
+        localStorage.setItem('lastGymUser', user);
     }
+
+    // Gestione Cronometro
+    let timer;
+    let timeLeft = 90;
+    let isRunning = false;
+
+    function toggleTimer() {
+        if (isRunning) {
+            clearInterval(timer);
+            document.getElementById('timerBtn').innerText = 'START';
+        } else {
+            timer = setInterval(updateTimer, 1000);
+            document.getElementById('timerBtn').innerText = 'PAUSE';
+        }
+        isRunning = !isRunning;
+    }
+
+    function updateTimer() {
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert("Recupero terminato!");
+            resetTimer();
+            return;
+        }
+        timeLeft--;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        document.getElementById('display').innerText = 
+            `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function resetTimer() {
+        clearInterval(timer);
+        timeLeft = 90;
+        isRunning = false;
+        document.getElementById('display').innerText = "01:30";
+        document.getElementById('timerBtn').innerText = 'START';
+    }
+
+    window.onload = () => {
+        showTab(localStorage.getItem('lastGymUser') || 'max');
+    };
 </script>
 
 </body>
