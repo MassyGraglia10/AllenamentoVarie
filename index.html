@@ -15,7 +15,6 @@
         .header { text-align: center; padding: 20px; background: white; box-shadow: var(--shadow); }
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
 
-        /* SELETTORE PROFILO */
         .user-selector { display: flex; gap: 10px; margin-bottom: 20px; }
         .btn-user { flex: 1; padding: 18px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; color: white; transition: 0.3s; font-size: 1rem; }
         .btn-max { background: var(--max-primary); }
@@ -29,22 +28,23 @@
         .card { background: var(--card); border-radius: 16px; padding: 15px; box-shadow: var(--shadow); margin-bottom: 15px; }
         .section-title { font-size: 0.75rem; font-weight: 800; color: #888; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
 
-        /* CALENDARIO */
+        /* CALENDARIO CON NOTE */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .cal-day { padding: 8px 0; font-size: 0.8rem; border-radius: 8px; background: #f8f9fa; cursor: pointer; border: 1px solid #eee; }
+        .cal-day { padding: 10px 0; font-size: 0.8rem; border-radius: 8px; background: #f8f9fa; cursor: pointer; border: 1px solid #eee; position: relative; }
         .cal-day.done { background: #28a745 !important; color: white; font-weight: bold; }
-        .cal-month { font-weight: bold; margin-bottom: 10px; text-align: center; font-size: 0.9rem; }
+        .cal-day.has-note::after { content: '•'; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); color: white; font-size: 12px; }
 
-        /* TIMER */
+        /* MODALE NOTE */
+        #note-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 15px; width: 80%; max-width: 350px; }
+        textarea { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 10px; box-sizing: border-box; margin: 10px 0; font-family: inherit; }
+
+        /* TIMER E VIDEO */
         .timer-card { max-width: 250px; margin: 0 auto 15px; text-align: center; }
-        .timer-display { font-size: 2.2rem; font-weight: 900; margin: 5px 0; color: #333; }
+        .timer-display { font-size: 2.2rem; font-weight: 900; margin: 5px 0; }
         .btn-act { padding: 8px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 0.8rem; }
-
-        /* PLAYLIST */
         .music-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
         .song-btn { padding: 10px; color: white; text-align: center; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; min-height: 40px; }
-
-        /* VIDEO TUTORIAL */
         .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .v-link { background: #f0f2f5; padding: 12px; border-radius: 10px; text-decoration: none; color: #444; font-size: 0.75rem; font-weight: 700; text-align: center; border: 1px solid #e4e6eb; }
 
@@ -65,10 +65,8 @@
 
     <div id="main-content">
         <div class="card">
-            <div class="section-title">Calendario Allenamenti</div>
-            <div id="calendar-month" class="cal-month">Marzo 2026</div>
+            <div class="section-title">Calendario Marzo 2026</div>
             <div id="calendar" class="calendar-grid"></div>
-            <p style="font-size: 0.6rem; color: #999; margin-top: 10px; text-align: center;">Tocca un giorno per segnarlo come completato ✅</p>
         </div>
 
         <div class="card" id="playlist-card" style="display:none;">
@@ -78,7 +76,6 @@
         </div>
 
         <div class="card timer-card">
-            <div class="section-title">Recupero</div>
             <div class="timer-display" id="display">90s</div>
             <div style="display:flex; gap:10px; justify-content:center;">
                 <button class="btn-act" style="background:#28a745;" id="tBtn" onclick="toggleTimer()">START</button>
@@ -88,8 +85,8 @@
 
         <div id="content-max" class="workout-section">
             <div class="card" style="text-align:center;">
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; max-width:250px; border-radius:10px; margin-bottom:10px;">
-                <div class="section-title">Video Tutorial</div>
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/main/Schedamassimo.jpg?raw=true" style="width:100%; max-width:250px; border-radius:10px;">
+                <div class="section-title" style="margin-top:15px;">Tutorial</div>
                 <div class="video-grid">
                     <a href="https://www.youtube.com/results?search_query=plank+tutorial" target="_blank" class="v-link">PLANK</a>
                     <a href="https://www.youtube.com/results?search_query=lat+machine+tutorial" target="_blank" class="v-link">LAT MACHINE</a>
@@ -101,8 +98,8 @@
 
         <div id="content-lili" class="workout-section">
             <div class="card" style="text-align:center;">
-                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; max-width:250px; border-radius:10px; margin-bottom:10px;">
-                <div class="section-title">Video Tutorial</div>
+                <img src="https://github.com/MassyGraglia10/mio-health-hub/blob/dd5a72f80b644d956f67ce817b1ad39efbcde49c/schedaLiliana.jpg?raw=true" style="width:100%; max-width:250px; border-radius:10px;">
+                <div class="section-title" style="margin-top:15px;">Tutorial</div>
                 <div class="video-grid">
                     <a href="https://www.youtube.com/results?search_query=crunch+addominali" target="_blank" class="v-link">CRUNCH</a>
                     <a href="https://www.youtube.com/results?search_query=leg+press" target="_blank" class="v-link">PRESSA</a>
@@ -113,28 +110,39 @@
         </div>
 
         <div class="card">
-            <div class="section-title">Wellness & Mind</div>
+            <div class="section-title">Wellness</div>
             <div class="video-grid">
-                <a href="https://www.youtube.com/results?search_query=yoga+italiano" target="_blank" class="v-link" style="color:var(--lili-primary);">🧘 YOGA</a>
-                <a href="https://www.youtube.com/results?search_query=pilates+italiano" target="_blank" class="v-link" style="color:var(--max-primary);">🤸 PILATES</a>
-                <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="v-link" style="color:#16a085;">🧠 MIND</a>
+                <a href="https://www.youtube.com/results?search_query=yoga+italiano" target="_blank" class="v-link">🧘 YOGA</a>
+                <a href="https://www.youtube.com/results?search_query=pilates+italiano" target="_blank" class="v-link">🤸 PILATES</a>
+                <a href="https://www.youtube.com/results?search_query=meditazione+guidata" target="_blank" class="v-link">🧠 MIND</a>
             </div>
         </div>
 
         <div class="card">
-            <div class="section-title">Aggiungi Playlist</div>
-            <input type="text" id="mTitle" placeholder="Titolo (es. Rock)">
-            <div style="display:flex; gap:5px;">
-                <input type="text" id="mLink" placeholder="Incolla Link Playlist..." style="flex:1; border: 1px solid #ddd; border-radius: 8px; padding: 8px;">
-                <button class="btn-act" style="background:var(--max-primary);" onclick="addMusic()">OK</button>
+            <input type="text" id="mTitle" placeholder="Titolo Playlist">
+            <div style="display:flex; gap:5px; margin-top:5px;">
+                <input type="text" id="mLink" placeholder="Link Playlist Spotify..." style="flex:1; padding:8px; border-radius:8px; border:1px solid #ddd;">
+                <button class="btn-act" style="background:#007bff;" onclick="addMusic()">OK</button>
             </div>
         </div>
     </div>
 </div>
 
+<div id="note-modal">
+    <div class="modal-content">
+        <h3 id="modal-date" style="margin-top:0;">Giorno X</h3>
+        <textarea id="note-text" rows="4" placeholder="Cosa hai allenato?"></textarea>
+        <div style="display:flex; gap:10px;">
+            <button class="btn-act" style="background:#28a745; flex:1;" onclick="saveNote()">SALVA</button>
+            <button class="btn-act" style="background:#6c757d; flex:1;" onclick="closeModal()">CHIUDI</button>
+        </div>
+        <button onclick="deleteNote()" style="width:100%; background:none; border:none; color:red; margin-top:10px; font-size:0.7rem;">Elimina allenamento</button>
+    </div>
+</div>
+
 <script>
     let currentUser = "";
-    const daysInMonth = 31;
+    let selectedDay = null;
 
     function showWorkout(user) {
         currentUser = user;
@@ -147,46 +155,61 @@
         renderPlaylist();
     }
 
-    // CALENDARIO LOGIC
+    // CALENDARIO E MODALE
     function renderCalendar() {
         const container = document.getElementById('calendar');
         container.innerHTML = "";
-        let doneDays = JSON.parse(localStorage.getItem('workout_days_' + currentUser) || "[]");
+        const data = JSON.parse(localStorage.getItem('data_' + currentUser) || "{}");
 
-        for (let i = 1; i <= daysInMonth; i++) {
+        for (let i = 1; i <= 31; i++) {
             const day = document.createElement('div');
-            day.className = 'cal-day' + (doneDays.includes(i) ? ' done' : '');
+            day.className = 'cal-day' + (data[i] ? ' done' : '') + (data[i] && data[i].text ? ' has-note' : '');
             day.innerText = i;
-            day.onclick = () => toggleDay(i);
+            day.onclick = () => openModal(i);
             container.appendChild(day);
         }
     }
 
-    function toggleDay(day) {
-        let doneDays = JSON.parse(localStorage.getItem('workout_days_' + currentUser) || "[]");
-        if (doneDays.includes(day)) {
-            doneDays = doneDays.filter(d => d !== day);
-        } else {
-            doneDays.push(day);
-        }
-        localStorage.setItem('workout_days_' + currentUser, JSON.stringify(doneDays));
+    function openModal(day) {
+        selectedDay = day;
+        const data = JSON.parse(localStorage.getItem('data_' + currentUser) || "{}");
+        document.getElementById('modal-date').innerText = "Giorno " + day;
+        document.getElementById('note-text').value = data[day] ? data[day].text : "";
+        document.getElementById('note-modal').style.display = 'flex';
+    }
+
+    function saveNote() {
+        let data = JSON.parse(localStorage.getItem('data_' + currentUser) || "{}");
+        data[selectedDay] = { text: document.getElementById('note-text').value };
+        localStorage.setItem('data_' + currentUser, JSON.stringify(data));
+        closeModal();
         renderCalendar();
     }
 
-    // TIMER LOGIC
+    function deleteNote() {
+        let data = JSON.parse(localStorage.getItem('data_' + currentUser) || "{}");
+        delete data[selectedDay];
+        localStorage.setItem('data_' + currentUser, JSON.stringify(data));
+        closeModal();
+        renderCalendar();
+    }
+
+    function closeModal() { document.getElementById('note-modal').style.display = 'none'; }
+
+    // TIMER
     let timeLeft = 90; let timer; let running = false;
     function toggleTimer() {
         if(!running) { 
-            timer = setInterval(() => { if(timeLeft > 0){ timeLeft--; document.getElementById('display').innerText = timeLeft + 's'; } else { clearInterval(timer); resetTimer(); alert('Recupero terminato!'); } }, 1000); 
+            timer = setInterval(() => { if(timeLeft > 0){ timeLeft--; document.getElementById('display').innerText = timeLeft + 's'; } else { clearInterval(timer); resetTimer(); alert('Recupero finito!'); } }, 1000); 
             document.getElementById('tBtn').innerText = 'PAUSE'; 
         } else { clearInterval(timer); document.getElementById('tBtn').innerText = 'START'; }
         running = !running;
     }
     function resetTimer() { clearInterval(timer); timeLeft = 90; running = false; document.getElementById('display').innerText = '90s'; document.getElementById('tBtn').innerText = 'START'; }
 
-    // PLAYLIST LOGIC
+    // PLAYLIST
     function addMusic() {
-        const title = document.getElementById('mTitle').value || "Music";
+        const title = document.getElementById('mTitle').value || "Playlist";
         const link = document.getElementById('mLink').value;
         if(link) {
             let list = JSON.parse(localStorage.getItem('playlist_' + currentUser) || "[]");
@@ -202,7 +225,6 @@
         const container = document.getElementById('music-grid');
         const card = document.getElementById('playlist-card');
         const color = currentUser === 'max' ? 'var(--max-primary)' : 'var(--lili-primary)';
-        
         if(list.length > 0) {
             card.style.display = 'block';
             container.innerHTML = list.map(item => `<a class="song-btn" style="background:${color}" href="${item.link}" target="_blank">${item.title}</a>`).join('');
